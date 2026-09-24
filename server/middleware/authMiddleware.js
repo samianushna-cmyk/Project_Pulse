@@ -19,7 +19,8 @@ export const protect = asyncHandler(async (req, res, next) => {
       }
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const secret = process.env.JWT_SECRET || 'projectpulse_jwt_secure_secret_key_2026';
+      const decoded = jwt.verify(token, secret);
 
       // Fetch user from DB (excluding password)
       const user = await User.findById(decoded.id).select('-password');
