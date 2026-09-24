@@ -9,6 +9,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RoleRoute from './components/RoleRoute';
 import StudentDashboard from './pages/student/StudentDashboard';
 import StudentProfilePage from './pages/student/StudentProfilePage';
+import StudentInvitationsPage from './pages/student/StudentInvitationsPage';
+import StudentTasksPage from './pages/student/StudentTasksPage';
+import StudentProjectsPage from './pages/student/StudentProjectsPage';
 import LeaderDashboard from './pages/leader/LeaderDashboard';
 import CreateProjectPage from './pages/leader/CreateProjectPage';
 import FacultyDashboard from './pages/faculty/FacultyDashboard';
@@ -43,6 +46,39 @@ export default function App() {
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['student']}>
                   <StudentProfilePage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/invitations"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentInvitationsPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/tasks"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentTasksPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/projects"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentProjectsPage />
                 </RoleRoute>
               </ProtectedRoute>
             }

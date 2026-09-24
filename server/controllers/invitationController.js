@@ -8,14 +8,15 @@ import { logActivity } from '../utils/activityLogger.js';
 // @route   POST /api/invitations
 // @access  Private (Leader only)
 export const sendInvitation = asyncHandler(async (req, res) => {
-  const { projectId, recipientId, recipientEmail, message } = req.body;
+  const targetProjectId = req.params.projectId || req.body.projectId;
+  const { recipientId, recipientEmail, message } = req.body;
 
-  if (!projectId) {
+  if (!targetProjectId) {
     res.status(400);
     throw new Error('Project ID is required');
   }
 
-  const project = await Project.findById(projectId);
+  const project = await Project.findById(targetProjectId);
   if (!project) {
     res.status(404);
     throw new Error('Project not found');

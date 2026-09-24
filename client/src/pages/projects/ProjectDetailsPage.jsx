@@ -1401,29 +1401,54 @@ export default function ProjectDetailsPage() {
                       </div>
                     )}
 
-                    {/* Review Actions for Leader & Faculty */}
-                    {(isLeader || isFaculty) && proof.status === 'Pending' && (
-                      <div className="pt-2 flex items-center gap-2 justify-end">
-                        <button
-                          onClick={() => {
-                            setReviewingProofId(proof._id);
-                            setReviewData({ status: 'Approved', feedback: '' });
-                          }}
-                          className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                    {/* Actions Row */}
+                    <div className="pt-2 flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={proof.proofUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors inline-flex items-center gap-1.5 shadow-xs"
                         >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => {
-                            setReviewingProofId(proof._id);
-                            setReviewData({ status: 'Rejected', feedback: '' });
-                          }}
-                          className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition-colors"
-                        >
-                          Reject
-                        </button>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Open Proof
+                        </a>
+
+                        {isFaculty && (
+                          <button
+                            onClick={() => setShowFeedbackModal(true)}
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors inline-flex items-center gap-1.5"
+                          >
+                            <MessageSquareQuote className="w-3.5 h-3.5 text-indigo-600" />
+                            Give Feedback
+                          </button>
+                        )}
                       </div>
-                    )}
+
+                      {/* Review Actions for Leader & Faculty */}
+                      {(isLeader || isFaculty) && proof.status === 'Pending' && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setReviewingProofId(proof._id);
+                              setReviewData({ status: 'Approved', feedback: '' });
+                            }}
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-xs"
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => {
+                              setReviewingProofId(proof._id);
+                              setReviewData({ status: 'Rejected', feedback: '' });
+                            }}
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

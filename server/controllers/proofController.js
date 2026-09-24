@@ -15,8 +15,18 @@ const isValidUrl = (urlString) => {
   }
 };
 
+// Helper to verify team membership
+const isUserInProjectTeam = (project, userId) => {
+  const userIdStr = userId.toString();
+  if (project.leader && project.leader.toString() === userIdStr) return true;
+  if (Array.isArray(project.members)) {
+    return project.members.some((m) => (m._id ? m._id.toString() : m.toString()) === userIdStr);
+  }
+  return false;
+};
+
 // @desc    Submit proof for an assigned task
-// @route   POST /api/tasks/:taskId/proofs
+// @route   POST /api/tasks/:taskId/proofs or POST /api/proofs/task/:taskId
 // @access  Private (Assigned student)
 export const submitProof = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
@@ -38,13 +48,37 @@ export const submitProof = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Authorization: Only the assigned student (or task creator/leader) can submit proof
+  const project = await Project.findById(task.project);
+  if (!project) {
+    res.status(404);
+    throw new Error('Associated project not found');
+  }
+
+  // 1. Authorization: Task must be assigned to the authenticated student
   if (task.assignedTo.toString() !== req.user._id.toString()) {
     res.status(403);
     throw new Error('Forbidden: You can only submit proof for tasks assigned to you');
   }
 
-  // Create or update pending proof
+  // 2. Authorization: Student must be a member of the project
+  if (!isUserInProjectTeam(project, req.user._id)) {
+    res.status(403);
+    throw new Error('Forbidden: You must be an active project team member to submit proof');
+  }
+
+  // 3. Prevent duplicate active pending submissions for the same task
+  const existingPending = await ProofSubmission.findOne({
+    task: task._id,
+    student: req.user._id,
+    status: 'Pending',
+  });
+
+  if (existingPending) {
+    res.status(400);
+    throw new Error('An active proof submission for this task is already pending review');
+  }
+
+  // Create proof submission
   const proof = await ProofSubmission.create({
     task: task._id,
     project: task.project,
@@ -68,13 +102,13 @@ export const submitProof = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Proof submitted successfully and pending evaluation',
+    message: 'Proof submitted successfully. Waiting for review.',
     proof: populatedProof,
   });
 });
 
 // @desc    Get proofs for a task
-// @route   GET /api/tasks/:taskId/proofs
+// @route   GET /api/tasks/:taskId/proofs or GET /api/proofs/task/:taskId
 // @access  Private
 export const getTaskProofs = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
@@ -120,6 +154,11 @@ export const reviewProof = asyncHandler(async (req, res) => {
   if (!status || !['Approved', 'Rejected'].includes(status)) {
     res.status(400);
     throw new Error("Review status must be either 'Approved' or 'Rejected'");
+  }
+
+  if (status === 'Rejected' && (!feedback || !feedback.trim())) {
+    res.status(400);
+    throw new Error('Feedback is required when rejecting a proof submission');
   }
 
   const proof = await ProofSubmission.findById(id).populate('project').populate('task');

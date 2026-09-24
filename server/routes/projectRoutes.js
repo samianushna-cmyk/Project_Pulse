@@ -10,6 +10,7 @@ import {
   createTask,
   getProjectTasks,
 } from '../controllers/taskController.js';
+import { sendInvitation } from '../controllers/invitationController.js';
 import { getProjectProofs } from '../controllers/proofController.js';
 import {
   addFeedback,
@@ -36,11 +37,17 @@ router
 // Skill Match Route
 router.route('/:id/match').get(protect, getProjectMatch);
 
+// Project Invitation Sub-routes
+router
+  .route('/:projectId/invitations')
+  .post(protect, authorizeRoles('leader'), sendInvitation);
+
 // Project Task Sub-routes
 router
   .route('/:projectId/tasks')
   .post(protect, authorizeRoles('leader'), createTask)
   .get(protect, getProjectTasks);
+
 
 // Project Proofs Sub-route
 router.route('/:projectId/proofs').get(protect, getProjectProofs);
