@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getProjectById, getProjectMatch } from '../../services/projectService';
 import {
@@ -62,6 +62,8 @@ import Button from '../../components/Button';
 export default function ProjectDetailsPage() {
   const { id } = useParams();
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
 
   // State: Core Project & Match
   const [project, setProject] = useState(null);
@@ -69,7 +71,13 @@ export default function ProjectDetailsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMatch, setLoadingMatch] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(tabParam || 'overview');
+
+  useEffect(() => {
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
 
   // State: Tasks
   const [tasks, setTasks] = useState([]);
@@ -262,11 +270,22 @@ export default function ProjectDetailsPage() {
   }, [activeTab, project]);
 
   // Helpers
-  const isLeader = project?.leader?._id === user?._id || project?.leader === user?._id;
+  const userId = user?._id || user?.id;
+  const isLeader =
+    (project?.leader?._id && userId && project.leader._id.toString() === userId.toString()) ||
+    (project?.leader && userId && project.leader.toString() === userId.toString()) ||
+    (project?.leader?.email && user?.email && project.leader.email === user.email);
+
   const isMember =
     isLeader ||
     (Array.isArray(project?.members) &&
-      project.members.some((m) => (m._id ? m._id === user?._id : m === user?._id)));
+      project.members.some((m) => {
+        const mId = m?._id || m?.id || m;
+        return (
+          (mId && userId && mId.toString() === userId.toString()) ||
+          (m?.email && user?.email && m.email === user.email)
+        );
+      }));
   const isFaculty = user?.role === 'faculty';
   const isStudent = user?.role === 'student';
 

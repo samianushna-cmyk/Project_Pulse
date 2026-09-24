@@ -20,6 +20,8 @@ export default function StudentProjectsPage() {
   const [joinedProjects, setJoinedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const userId = user?._id || user?.id;
+
   useEffect(() => {
     const fetchJoinedProjects = async () => {
       setLoading(true);
@@ -28,7 +30,13 @@ export default function StudentProjectsPage() {
         if (data.success && Array.isArray(data.projects)) {
           const myJoined = data.projects.filter((p) => {
             if (Array.isArray(p.members)) {
-              return p.members.some((m) => (m._id ? m._id === user?._id : m === user?._id));
+              return p.members.some((m) => {
+                const mId = m?._id || m?.id || m;
+                return (
+                  (mId && userId && mId.toString() === userId.toString()) ||
+                  (m?.email && user?.email && m.email === user.email)
+                );
+              });
             }
             return false;
           });
@@ -41,10 +49,15 @@ export default function StudentProjectsPage() {
       }
     };
 
-    if (user?._id) {
+    if (userId) {
       fetchJoinedProjects();
+    } else {
+      const timeout = setTimeout(() => {
+        if (!userId) setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timeout);
     }
-  }, [user?._id]);
+  }, [userId, user?.email]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Recently';

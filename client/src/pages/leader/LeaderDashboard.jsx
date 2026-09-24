@@ -21,7 +21,10 @@ import {
   MailQuestion,
   Loader2,
   Clock,
-  Plus
+  Plus,
+  AlertCircle,
+  Eye,
+  CheckSquare
 } from 'lucide-react';
 import Button from '../../components/Button';
 
@@ -32,41 +35,66 @@ export default function LeaderDashboard() {
   const [leaderProjects, setLeaderProjects] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [projRes, invRes] = await Promise.all([
-          getProjects(),
-          getInvitations(),
-        ]);
+  const userId = user?._id || user?.id;
 
-        if (projRes.success && Array.isArray(projRes.projects)) {
-          const myProjects = projRes.projects.filter(
-            (p) => p.leader?._id === user?._id || p.leader === user?._id
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      // Fetch projects and invitations gracefully
+      const projPromise = getProjects().catch((err) => {
+        console.warn('Projects fetch failed:', err);
+        return { success: false, error: err.response?.data?.message || err.message };
+      });
+      const invPromise = getInvitations().catch((err) => {
+        console.warn('Invitations fetch failed:', err);
+        return { success: false, error: err.message };
+      });
+
+      const [projRes, invRes] = await Promise.all([projPromise, invPromise]);
+
+      if (projRes.success && Array.isArray(projRes.projects)) {
+        const myProjects = projRes.projects.filter((p) => {
+          const leaderId = p.leader?._id || p.leader?.id || p.leader;
+          return (
+            (leaderId && userId && leaderId.toString() === userId.toString()) ||
+            (p.leader && p.leader.email && user?.email && p.leader.email === user.email)
           );
-          setLeaderProjects(myProjects);
-        }
-
-        if (invRes.success && Array.isArray(invRes.invitations)) {
-          setInvitations(invRes.invitations);
-        }
-      } catch (err) {
-        console.warn('Failed to load leader dashboard data:', err.message);
-      } finally {
-        setLoading(false);
+        });
+        setLeaderProjects(myProjects);
+      } else if (!projRes.success) {
+        setError(projRes.error || 'Unable to load projects.');
       }
-    };
 
-    if (user?._id) {
-      fetchData();
+      if (invRes.success && Array.isArray(invRes.invitations)) {
+        setInvitations(invRes.invitations);
+      }
+    } catch (err) {
+      console.error('Failed to load leader dashboard data:', err);
+      setError(err.response?.data?.message || err.message || 'Unable to load projects.');
+    } finally {
+      setLoading(false);
     }
-  }, [user?._id]);
+  };
+
+  useEffect(() => {
+    if (userId) {
+      fetchDashboardData();
+    } else {
+      // If user is loaded from session without immediate id
+      const timeout = setTimeout(() => {
+        if (!userId) setLoading(false);
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [userId, user?.email]);
 
   // Aggregate metrics
   const activeProjectsCount = leaderProjects.filter((p) => p.status !== 'Completed').length;
@@ -157,6 +185,22 @@ export default function LeaderDashboard() {
           </Button>
         </div>
 
+        {/* Error State if API Fails */}
+        {error && (
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between gap-3 text-rose-800 text-xs font-semibold">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>Unable to load projects. {error}</span>
+            </div>
+            <button
+              onClick={fetchDashboardData}
+              className="px-3 py-1 bg-white border border-rose-200 rounded-lg text-rose-700 font-bold hover:bg-rose-100 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="p-4 rounded-xl bg-purple-50/60 border border-purple-100 space-y-1">
@@ -196,7 +240,7 @@ export default function LeaderDashboard() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-              Your Managed Projects ({leaderProjects.length})
+              My Projects ({leaderProjects.length})
             </h3>
             <Link
               to="/leader/projects/create"
@@ -207,73 +251,113 @@ export default function LeaderDashboard() {
           </div>
 
           {loading ? (
-            <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-              <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
-              <span>Loading your projects...</span>
+            <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
+              <Loader2 className="w-7 h-7 animate-spin text-purple-600" />
+              <span>Loading projects...</span>
             </div>
           ) : leaderProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {leaderProjects.map((proj) => {
                 const teamSize = 1 + (proj.members?.length || 0);
+                const memberNames = Array.isArray(proj.members) && proj.members.length > 0
+                  ? proj.members.map((m) => (typeof m === 'object' ? m.name : 'Student')).join(', ')
+                  : 'Leader only';
+
                 return (
-                  <Link
+                  <div
                     key={proj._id}
-                    to={`/projects/${proj._id}`}
-                    className="p-5 rounded-xl border border-slate-200/90 bg-white hover:border-purple-300 hover:shadow-xs transition-all block group space-y-3"
+                    className="p-5 rounded-xl border border-slate-200/90 bg-white hover:border-purple-300 hover:shadow-xs transition-all flex flex-col justify-between space-y-4"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-md border border-purple-100">
-                        {proj.category}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                          {teamSize} / {proj.maxTeamSize} Members
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-md border border-purple-100">
+                          {proj.category}
                         </span>
-                        <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                          {proj.status}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                            {teamSize} / {proj.maxTeamSize} Members
+                          </span>
+                          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            {proj.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-bold text-slate-900 text-base line-clamp-1">
+                          {proj.title}
+                        </h4>
+                        <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                          {proj.description}
+                        </p>
+                      </div>
+
+                      {/* Current Members Display */}
+                      <div className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100 space-y-1">
+                        <div className="font-semibold text-slate-700 flex items-center gap-1">
+                          <Users className="w-3.5 h-3.5 text-purple-600" />
+                          <span>Current Members:</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 line-clamp-1">
+                          {memberNames}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1">
+                        {proj.requiredSkills?.slice(0, 3).map((s, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                        {proj.requiredSkills?.length > 3 && (
+                          <span className="text-[10px] text-slate-400 self-center">
+                            +{proj.requiredSkills.length - 3} more
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-base group-hover:text-purple-600 transition-colors line-clamp-1">
-                        {proj.title}
-                      </h4>
-                      <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-                        {proj.description}
-                      </p>
-                    </div>
+                    <div className="pt-3 border-t border-slate-100 space-y-3">
+                      <div className="text-[11px] text-slate-400">
+                        Created {formatDate(proj.createdAt)}
+                      </div>
 
-                    <div className="flex flex-wrap gap-1 pt-1">
-                      {proj.requiredSkills?.slice(0, 3).map((s, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700"
+                      {/* Explicit Action Buttons */}
+                      <div className="grid grid-cols-3 gap-2">
+                        <Link
+                          to={`/projects/${proj._id}`}
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200/60 text-center transition-colors flex items-center justify-center gap-1"
                         >
-                          {s}
-                        </span>
-                      ))}
-                      {proj.requiredSkills?.length > 3 && (
-                        <span className="text-[10px] text-slate-400 self-center">
-                          +{proj.requiredSkills.length - 3} more
-                        </span>
-                      )}
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>View Project</span>
+                        </Link>
+                        <Link
+                          to={`/projects/${proj._id}?tab=team`}
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200/60 text-center transition-colors flex items-center justify-center gap-1"
+                        >
+                          <Users className="w-3.5 h-3.5" />
+                          <span>Manage Team</span>
+                        </Link>
+                        <Link
+                          to={`/projects/${proj._id}?tab=tasks`}
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 text-center transition-colors flex items-center justify-center gap-1"
+                        >
+                          <CheckSquare className="w-3.5 h-3.5" />
+                          <span>Tasks</span>
+                        </Link>
+                      </div>
                     </div>
-
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                      <span>Created {formatDate(proj.createdAt)}</span>
-                      <span className="text-purple-600 font-semibold group-hover:underline flex items-center gap-1">
-                        Manage Workspace &rarr;
-                      </span>
-                    </div>
-                  </Link>
+                  </div>
                 );
               })}
             </div>
           ) : (
             <div className="p-8 rounded-xl border border-dashed border-slate-200 text-center space-y-3">
               <FolderPlus className="w-8 h-8 text-slate-300 mx-auto" />
-              <p className="text-xs font-semibold text-slate-600">No projects created yet</p>
+              <p className="text-xs font-semibold text-slate-600">No projects created yet.</p>
               <Button
                 to="/leader/projects/create"
                 variant="primary"
