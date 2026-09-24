@@ -265,6 +265,26 @@ export const deleteTask = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Get single task by ID
+// @route   GET /api/tasks/:id
+// @access  Private
+export const getTaskById = asyncHandler(async (req, res) => {
+  const task = await Task.findById(req.params.id)
+    .populate('project', 'title category status leader members')
+    .populate('assignedTo', 'name email department skills')
+    .populate('createdBy', 'name email');
+
+  if (!task) {
+    res.status(404);
+    throw new Error('Task not found');
+  }
+
+  res.status(200).json({
+    success: true,
+    task,
+  });
+});
+
 // @desc    Get all tasks assigned to the current student
 // @route   GET /api/tasks/my
 // @access  Private (Student)
@@ -280,3 +300,4 @@ export const getMyTasks = asyncHandler(async (req, res) => {
     tasks,
   });
 });
+

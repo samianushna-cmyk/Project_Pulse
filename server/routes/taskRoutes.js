@@ -2,6 +2,7 @@ import express from 'express';
 import {
   createTask,
   getProjectTasks,
+  getTaskById,
   updateTask,
   deleteTask,
   getMyTasks,
@@ -24,6 +25,7 @@ router
 
 router
   .route('/:id')
+  .get(protect, getTaskById)
   .put(protect, updateTask)
   .delete(protect, authorizeRoles('leader'), deleteTask);
 
