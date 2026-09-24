@@ -5,6 +5,10 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
+import invitationRoutes from './routes/invitationRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
+import proofRoutes from './routes/proofRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Load environment variables
@@ -73,6 +77,11 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/invitations', invitationRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/proofs', proofRoutes);
+app.use('/api/feedback', feedbackRoutes);
+
 
 // Error Handling Middleware
 app.use(notFound);

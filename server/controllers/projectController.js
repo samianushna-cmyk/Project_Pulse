@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Project from '../models/Project.js';
 import { calculateSkillMatch } from '../utils/skillMatcher.js';
+import { logActivity } from '../utils/activityLogger.js';
 
 // @desc    Create a new project
 // @route   POST /api/projects
@@ -79,15 +80,23 @@ export const createProject = asyncHandler(async (req, res) => {
     title: title.trim(),
     description: description.trim(),
     leader: leaderId,
+    members: [],
     requiredSkills: sanitizedSkills,
     category: category.trim(),
     status: projectStatus,
     maxTeamSize: parsedTeamSize,
   });
 
-  const populatedProject = await Project.findById(project._id).populate(
-    'leader',
-    'name email department role'
+  const populatedProject = await Project.findById(project._id)
+    .populate('leader', 'name email department role skills availability githubUrl portfolioUrl')
+    .populate('members', 'name email department role skills availability githubUrl portfolioUrl');
+
+  // Log Activity
+  await logActivity(
+    project._id,
+    req.user._id,
+    'Project created',
+    `${req.user.name} created the project "${project.title}"`
   );
 
   res.status(201).json({
@@ -102,7 +111,8 @@ export const createProject = asyncHandler(async (req, res) => {
 // @access  Private (Authenticated users: student, leader, faculty)
 export const getProjects = asyncHandler(async (req, res) => {
   const projects = await Project.find()
-    .populate('leader', 'name email department role')
+    .populate('leader', 'name email department role skills availability')
+    .populate('members', 'name email department role skills availability')
     .sort({ createdAt: -1 });
 
   res.status(200).json({
@@ -118,10 +128,9 @@ export const getProjects = asyncHandler(async (req, res) => {
 export const getProjectById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const project = await Project.findById(id).populate(
-    'leader',
-    'name email department role'
-  );
+  const project = await Project.findById(id)
+    .populate('leader', 'name email department role skills availability githubUrl portfolioUrl')
+    .populate('members', 'name email department role skills availability githubUrl portfolioUrl');
 
   if (!project) {
     res.status(404);
@@ -131,6 +140,88 @@ export const getProjectById = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     project,
+  });
+});
+
+// @desc    Update project (Leader only)
+// @route   PUT /api/projects/:id
+// @access  Private (Leader only)
+export const updateProject = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, description, category, requiredSkills, maxTeamSize, status } = req.body;
+
+  const project = await Project.findById(id);
+  if (!project) {
+    res.status(404);
+    throw new Error('Project not found');
+  }
+
+  // Authorization: Only the project leader can update it
+  if (project.leader.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Forbidden: Only the project leader can update this project');
+  }
+
+  if (title !== undefined) project.title = title.trim();
+  if (description !== undefined) project.description = description.trim();
+  if (category !== undefined) project.category = category.trim();
+
+  if (requiredSkills !== undefined) {
+    if (!Array.isArray(requiredSkills) || requiredSkills.length === 0) {
+      res.status(400);
+      throw new Error('At least one required skill is required');
+    }
+    const seen = new Set();
+    const sanitized = [];
+    for (const sk of requiredSkills) {
+      if (typeof sk === 'string' && sk.trim()) {
+        const lower = sk.trim().toLowerCase();
+        if (!seen.has(lower)) {
+          seen.add(lower);
+          sanitized.push(sk.trim());
+        }
+      }
+    }
+    if (sanitized.length === 0) {
+      res.status(400);
+      throw new Error('At least one valid required skill is required');
+    }
+    project.requiredSkills = sanitized;
+  }
+
+  if (maxTeamSize !== undefined) {
+    const parsed = Number(maxTeamSize);
+    if (isNaN(parsed) || parsed < 1) {
+      res.status(400);
+      throw new Error('Maximum team size must be at least 1');
+    }
+    const currentCount = 1 + (project.members?.length || 0);
+    if (parsed < currentCount) {
+      res.status(400);
+      throw new Error(`Cannot reduce max team size below current team size (${currentCount})`);
+    }
+    project.maxTeamSize = parsed;
+  }
+
+  if (status !== undefined) {
+    const validStatuses = ['Open', 'In Progress', 'Completed'];
+    if (!validStatuses.includes(status)) {
+      res.status(400);
+      throw new Error(`Invalid status '${status}'`);
+    }
+    project.status = status;
+  }
+
+  await project.save();
+
+  const populatedProject = await Project.findById(project._id)
+    .populate('leader', 'name email department role skills availability githubUrl portfolioUrl')
+    .populate('members', 'name email department role skills availability githubUrl portfolioUrl');
+
+  res.status(200).json({
+    success: true,
+    message: 'Project updated successfully',
+    project: populatedProject,
   });
 });
 

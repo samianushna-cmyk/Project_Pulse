@@ -162,3 +162,35 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     },
   });
 });
+
+// @desc    Get all students (for team recruitment & discovery)
+// @route   GET /api/users/students
+// @access  Private (Authenticated users)
+export const getStudents = asyncHandler(async (req, res) => {
+  const { search, department, skill } = req.query;
+  const query = { role: 'student' };
+
+  if (department) {
+    query.department = new RegExp(department.trim(), 'i');
+  }
+
+  if (skill) {
+    query.skills = { $regex: new RegExp(skill.trim(), 'i') };
+  }
+
+  if (search) {
+    const searchRegex = new RegExp(search.trim(), 'i');
+    query.$or = [{ name: searchRegex }, { email: searchRegex }, { skills: searchRegex }];
+  }
+
+  const students = await User.find(query)
+    .select('-password')
+    .sort({ name: 1 });
+
+  res.status(200).json({
+    success: true,
+    count: students.length,
+    students,
+  });
+});
+

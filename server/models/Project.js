@@ -45,6 +45,12 @@ const projectSchema = new mongoose.Schema(
       required: [true, 'Please specify the maximum team size'],
       min: [1, 'Maximum team size must be at least 1'],
     },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     timestamps: true,

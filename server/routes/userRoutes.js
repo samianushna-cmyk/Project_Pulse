@@ -1,8 +1,14 @@
 import express from 'express';
-import { getUserProfile, updateUserProfile } from '../controllers/userController.js';
+import {
+  getUserProfile,
+  updateUserProfile,
+  getStudents,
+} from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+router.get('/students', protect, getStudents);
 
 router
   .route('/profile')
@@ -10,3 +16,4 @@ router
   .put(protect, updateUserProfile);
 
 export default router;
+
