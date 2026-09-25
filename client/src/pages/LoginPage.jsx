@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Activity, Mail, Lock, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
+import { Mail, Lock, ArrowRight, AlertCircle, Loader2, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import Button from '../components/Button';
 
 export default function LoginPage() {
   const { login, user, isAuthenticated, getDashboardPath } = useAuth();
@@ -13,6 +12,7 @@ export default function LoginPage() {
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,33 +53,43 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-160px)] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-radial-grid">
-      <div className="w-full max-w-md">
-        {/* Card Container */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl p-8 sm:p-10 border border-slate-200/90 shadow-card">
-          {/* Header & Logo */}
+    <div className="relative min-h-[calc(100vh-80px)] w-full flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#FAF8F4] text-[#1C1D1B] overflow-hidden">
+      {/* Background Soft Studio Ambient Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-radial-warm pointer-events-none opacity-70"></div>
+      <div className="absolute top-1/4 left-1/12 w-[350px] h-[350px] bg-[#1E281F]/5 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-10 right-1/12 w-[350px] h-[350px] bg-[#C87841]/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+      {/* Main Container */}
+      <div className="relative z-10 w-full max-w-md">
+        {/* Elevated Tactile Ivory Card */}
+        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-stone-200/80 shadow-[0_20px_50px_rgba(28,29,27,0.06)] hover:border-stone-300 transition-all duration-300">
+          
+          {/* Header & Logo Icon */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2.5 group mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200">
-                <Activity className="w-5 h-5 text-indigo-100" />
-              </div>
-              <span className="text-2xl font-bold tracking-tight text-slate-900">
-                Project<span className="text-indigo-600">Pulse</span>
-              </span>
-            </Link>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Welcome back
+            <div className="flex justify-center mb-5">
+              <Link to="/" className="inline-flex items-center group focus:outline-none">
+                <div className="w-12 h-12 rounded-2xl bg-[#1E281F] flex items-center justify-center shadow-md shadow-[#1E281F]/15 group-hover:scale-105 transition-transform duration-200">
+                  <svg className="w-6 h-6 text-[#FAF8F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12h3.5l2.5-6 4 12 2.5-6H20" />
+                    <circle cx="12" cy="12" r="1.5" fill="#C87841" stroke="#C87841" />
+                  </svg>
+                </div>
+              </Link>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1C1D1B]">
+              Welcome Back
             </h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Sign in to manage your projects, skills, and team deliverables
+            <p className="mt-2 text-sm text-[#525850]">
+              Sign in to continue to ProjectPulse
             </p>
           </div>
 
           {/* Backend / Validation Error Alert */}
           {error && (
-            <div className="mb-6 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-rose-700 text-sm">
-              <AlertCircle className="w-5 h-5 mt-0.5 shrink-0 text-rose-500" />
-              <span>{error}</span>
+            <div className="mb-6 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-rose-800 text-sm shadow-sm animate-fade-in">
+              <AlertCircle className="w-5 h-5 mt-0.5 shrink-0 text-rose-600" />
+              <span className="leading-snug">{error}</span>
             </div>
           )}
 
@@ -89,12 +99,12 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-[#60685D] mb-1.5"
               >
                 Email Address
               </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#60685D]">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -106,25 +116,27 @@ export default function LoginPage() {
                   required
                   autoComplete="email"
                   placeholder="student@university.edu"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-4 py-3 bg-[#F7F5F0] border border-stone-300/80 rounded-xl text-sm text-[#1C1D1B] placeholder-[#60685D]/50 focus:bg-white focus:outline-none focus:border-[#C87841] focus:ring-2 focus:ring-[#C87841]/20 transition-all duration-200"
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
-              >
-                Password
-              </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="flex items-center justify-between mb-1.5">
+                <label
+                  htmlFor="password"
+                  className="block text-xs font-semibold uppercase tracking-wider text-[#60685D]"
+                >
+                  Password
+                </label>
+              </div>
+              <div className="relative rounded-xl shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#60685D]">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   name="password"
                   value={formData.password}
@@ -132,42 +144,61 @@ export default function LoginPage() {
                   required
                   autoComplete="current-password"
                   placeholder="••••••••••••"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-11 py-3 bg-[#F7F5F0] border border-stone-300/80 rounded-xl text-sm text-[#1C1D1B] placeholder-[#60685D]/50 focus:bg-white focus:outline-none focus:border-[#C87841] focus:ring-2 focus:ring-[#C87841]/20 transition-all duration-200"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#60685D] hover:text-[#1C1D1B] transition-colors cursor-pointer"
+                  tabIndex={-1}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button - Solid Deep Forest Olive */}
             <div className="pt-2">
-              <Button
+              <button
                 type="submit"
-                variant="primary"
-                size="lg"
                 disabled={isSubmitting}
-                className="w-full justify-center shadow-md shadow-indigo-500/20"
-                icon={isSubmitting ? Loader2 : ArrowRight}
-                iconPosition="right"
+                className="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-[#1E281F] hover:bg-[#151D16] shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer text-sm sm:text-base"
               >
-                {isSubmitting ? 'Signing In...' : 'Sign In'}
-              </Button>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin text-white" />
+                    <span>Signing In...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Log In →</span>
+                  </>
+                )}
+              </button>
             </div>
           </form>
 
           {/* Footer Signup Link */}
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center text-sm text-slate-600">
-            Don't have an account yet?{' '}
+          <div className="mt-8 pt-6 border-t border-stone-200/80 text-center text-sm text-[#525850]">
+            Don't have an account?{' '}
             <Link
               to="/signup"
-              className="font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
+              className="font-semibold text-[#C87841] hover:underline transition-colors"
             >
-              Sign up here
+              Sign up
             </Link>
           </div>
         </div>
 
         {/* Security / Academic Notice */}
-        <div className="mt-6 text-center text-xs text-slate-500">
-          Protected by role-based academic access control.
+        <div className="mt-6 text-center text-xs text-[#787F75] flex items-center justify-center gap-1.5">
+          <Lock className="w-3.5 h-3.5 text-[#787F75]" />
+          <span>Protected by role-based academic access control.</span>
         </div>
       </div>
     </div>

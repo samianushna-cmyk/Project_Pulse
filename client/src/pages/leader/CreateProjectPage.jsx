@@ -185,20 +185,20 @@ export default function CreateProjectPage() {
         <div>
           <Link
             to="/leader/dashboard"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-600 hover:text-purple-700 transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C87841] hover:text-[#A35222] transition-colors mb-2"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Leader Dashboard
+            Back to Leader Workspace
           </Link>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md shadow-purple-500/20">
-              <FolderPlus className="w-5 h-5" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#1E281F] flex items-center justify-center shadow-md shadow-[#1E281F]/15">
+              <FolderPlus className="w-5 h-5 text-[#FAF8F4]" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1C1D1B] tracking-tight">
                 Create New Project
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600">
+              <p className="text-xs sm:text-sm text-[#525850]">
                 Define the requirements, category, and squad capacity for your upcoming initiative.
               </p>
             </div>
@@ -208,20 +208,20 @@ export default function CreateProjectPage() {
 
       {/* Alerts */}
       {successMessage && (
-        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3 text-emerald-800 text-sm shadow-xs animate-fade-in">
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start gap-3 text-emerald-800 text-sm shadow-xs animate-fade-in">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="flex-1 font-medium">{successMessage}</div>
         </div>
       )}
 
       {errorMessage && (
-        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-sm shadow-xs animate-fade-in">
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-sm shadow-xs animate-fade-in">
           <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
           <div className="flex-1 font-medium">{errorMessage}</div>
           <button
             type="button"
             onClick={() => setErrorMessage('')}
-            className="text-rose-500 hover:text-rose-700 p-1"
+            className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -231,14 +231,14 @@ export default function CreateProjectPage() {
       {/* Project Creation Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* 1. General Project Details */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center gap-2.5 pb-4 border-b border-stone-100">
+            <div className="w-9 h-9 rounded-xl bg-[#EAF2E8] text-[#2D452E] flex items-center justify-center border border-[#2D452E]/15">
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Project Overview</h2>
-              <p className="text-xs text-slate-500">Provide the title, scope, and domain</p>
+              <h2 className="text-lg font-bold text-[#1C1D1B]">Project Overview</h2>
+              <p className="text-xs text-stone-500">Provide the title, scope, and domain</p>
             </div>
           </div>
 
@@ -247,9 +247,9 @@ export default function CreateProjectPage() {
             <div>
               <label
                 htmlFor="title"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
-                Project Title <span className="text-rose-500">*</span>
+                Project Title <span className="text-[#C87841]">*</span>
               </label>
               <input
                 type="text"
@@ -259,7 +259,7 @@ export default function CreateProjectPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="e.g. E-Commerce Platform for Student Entrepreneurs"
-                className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors"
+                className="block w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
               />
             </div>
 
@@ -267,9 +267,9 @@ export default function CreateProjectPage() {
             <div>
               <label
                 htmlFor="description"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
-                Project Description <span className="text-rose-500">*</span>
+                Project Description <span className="text-[#C87841]">*</span>
               </label>
               <textarea
                 id="description"
@@ -279,7 +279,7 @@ export default function CreateProjectPage() {
                 onChange={handleInputChange}
                 required
                 placeholder="Describe the problem, objectives, architecture, and expected deliverables..."
-                className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors resize-y"
+                className="block w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all resize-y"
               />
             </div>
 
@@ -289,9 +289,9 @@ export default function CreateProjectPage() {
               <div>
                 <label
                   htmlFor="category"
-                  className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                  className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
                 >
-                  Category <span className="text-rose-500">*</span>
+                  Category <span className="text-[#C87841]">*</span>
                 </label>
                 <div className="relative">
                   <select
@@ -299,7 +299,7 @@ export default function CreateProjectPage() {
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors cursor-pointer"
+                    className="block w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all cursor-pointer"
                   >
                     {CATEGORIES.map((cat, idx) => (
                       <option key={idx} value={cat}>
@@ -315,7 +315,7 @@ export default function CreateProjectPage() {
                     value={formData.customCategory}
                     onChange={handleInputChange}
                     placeholder="Enter custom category name"
-                    className="mt-2 block w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors"
+                    className="mt-2 block w-full px-3.5 py-2 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                   />
                 )}
               </div>
@@ -324,12 +324,12 @@ export default function CreateProjectPage() {
               <div>
                 <label
                   htmlFor="maxTeamSize"
-                  className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                  className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
                 >
-                  Max Team Size <span className="text-rose-500">*</span>
+                  Max Team Size <span className="text-[#C87841]">*</span>
                 </label>
-                <div className="relative rounded-lg shadow-xs">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="relative rounded-xl shadow-xs">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                     <Users className="w-4 h-4" />
                   </div>
                   <input
@@ -341,7 +341,7 @@ export default function CreateProjectPage() {
                     value={formData.maxTeamSize}
                     onChange={handleInputChange}
                     required
-                    className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors"
+                    className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -352,7 +352,7 @@ export default function CreateProjectPage() {
               <div>
                 <label
                   htmlFor="status"
-                  className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                  className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
                 >
                   Initial Status
                 </label>
@@ -361,13 +361,13 @@ export default function CreateProjectPage() {
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors cursor-pointer"
+                  className="block w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all cursor-pointer"
                 >
                   <option value="Open">Open</option>
                   <option value="In Progress">In Progress</option>
                   <option value="Completed">Completed</option>
                 </select>
-                <p className="mt-1 text-[11px] text-slate-500">
+                <p className="mt-1 text-[11px] text-stone-500">
                   Defaults to &quot;Open&quot; for team formation.
                 </p>
               </div>
@@ -376,20 +376,20 @@ export default function CreateProjectPage() {
         </div>
 
         {/* 2. Required Skills Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100">
+              <div className="w-9 h-9 rounded-xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center border border-[#C87841]/20">
                 <Tag className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-slate-900">Required Skills</h2>
-                <p className="text-xs text-slate-500">
+                <h2 className="text-lg font-bold text-[#1C1D1B]">Required Skills</h2>
+                <p className="text-xs text-stone-500">
                   Skills candidates must possess to contribute effectively
                 </p>
               </div>
             </div>
-            <span className="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-100 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-semibold text-[#2D452E] bg-[#EAF2E8] border border-[#2D452E]/15 px-3 py-1 rounded-full">
               {formData.requiredSkills.length} {formData.requiredSkills.length === 1 ? 'Skill' : 'Skills'}
             </span>
           </div>
@@ -398,14 +398,14 @@ export default function CreateProjectPage() {
           <div>
             <label
               htmlFor="skillInput"
-              className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+              className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
             >
-              Add Required Skill <span className="text-rose-500">*</span>
+              Add Required Skill <span className="text-[#C87841]">*</span>
             </label>
             <div className="flex gap-2">
               <div className="relative flex-grow shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Sparkles className="w-4 h-4 text-purple-500" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                  <Sparkles className="w-4 h-4 text-[#C87841]" />
                 </div>
                 <input
                   type="text"
@@ -422,18 +422,17 @@ export default function CreateProjectPage() {
                     }
                   }}
                   placeholder="e.g. React, Node.js, MongoDB, Git"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
-              <Button
+              <button
                 type="button"
-                variant="secondary"
-                size="md"
-                icon={Plus}
                 onClick={() => handleAddSkill()}
+                className="px-4 py-2.5 rounded-xl bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
               >
-                Add
-              </Button>
+                <Plus className="w-4 h-4 text-[#C87841]" />
+                <span>Add</span>
+              </button>
             </div>
             {skillError && (
               <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
@@ -445,21 +444,21 @@ export default function CreateProjectPage() {
 
           {/* Skill Chips */}
           <div>
-            <span className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-2">
               Added Required Skills
             </span>
             {formData.requiredSkills.length > 0 ? (
-              <div className="flex flex-wrap gap-2.5 p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+              <div className="flex flex-wrap gap-2 p-4 rounded-2xl bg-[#FAF8F4] border border-stone-200/80">
                 {formData.requiredSkills.map((skill, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-purple-700 border border-purple-200 shadow-xs group hover:border-purple-300 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#F2EFE9] text-stone-800 border border-stone-300/60 shadow-xs group hover:border-stone-400 transition-all"
                   >
                     <span>{skill}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
-                      className="p-0.5 rounded-full text-purple-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                      className="p-0.5 rounded-full text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                       title={`Remove ${skill}`}
                     >
                       <X className="w-3.5 h-3.5" />
@@ -468,15 +467,15 @@ export default function CreateProjectPage() {
                 ))}
               </div>
             ) : (
-              <div className="p-6 rounded-xl bg-slate-50 border border-dashed border-slate-300 text-center text-slate-500 text-sm">
-                No skills added yet. Type a skill name above and press Enter or select from recommendations below.
+              <div className="p-6 rounded-2xl bg-[#FAF8F4] border border-dashed border-stone-300 text-center text-stone-500 text-xs">
+                No skills added yet. Type a skill name above and press Enter or select from suggestions below.
               </div>
             )}
           </div>
 
           {/* Popular Suggestions */}
           <div>
-            <span className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-2">
               Suggested Skills
             </span>
             <div className="flex flex-wrap gap-2">
@@ -490,16 +489,16 @@ export default function CreateProjectPage() {
                     type="button"
                     disabled={isSelected}
                     onClick={() => handleAddSkill(popularSkill)}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       isSelected
-                        ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-60'
-                        : 'bg-white text-slate-700 hover:text-purple-600 hover:border-purple-300 border border-slate-200 hover:bg-purple-50/50 shadow-xs cursor-pointer'
+                        ? 'bg-stone-100 text-stone-400 border border-stone-200 cursor-not-allowed opacity-60'
+                        : 'bg-white text-stone-700 hover:text-[#1E281F] hover:border-stone-400 border border-stone-200 shadow-xs cursor-pointer'
                     }`}
                   >
                     {isSelected ? (
-                      <Check className="w-3 h-3 text-emerald-500" />
+                      <Check className="w-3 h-3 text-emerald-600" />
                     ) : (
-                      <Plus className="w-3 h-3 text-slate-400" />
+                      <Plus className="w-3 h-3 text-stone-400" />
                     )}
                     {popularSkill}
                   </button>
@@ -510,30 +509,34 @@ export default function CreateProjectPage() {
         </div>
 
         {/* Action Bar */}
-        <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-slate-500 text-center sm:text-left">
+        <div className="p-5 sm:p-6 rounded-3xl bg-white border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-stone-500 text-center sm:text-left">
             Once created, the project will immediately be visible to students and faculty.
           </div>
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Button
+            <Link
               to="/leader/dashboard"
-              variant="outline"
-              size="md"
-              className="w-full sm:w-auto justify-center"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full border border-stone-300 hover:bg-stone-100 text-stone-800 text-xs font-semibold text-center transition-all"
             >
               Cancel
-            </Button>
-            <Button
+            </Link>
+            <button
               type="submit"
-              variant="primary"
-              size="md"
-              icon={isSubmitting ? Loader2 : FolderPlus}
-              iconPosition="left"
               disabled={isSubmitting}
-              className="w-full sm:w-auto justify-center bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 shadow-sm shadow-purple-500/20"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Creating Project...' : 'Create Project'}
-            </Button>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-[#C87841]" />
+                  <span>Creating Project...</span>
+                </>
+              ) : (
+                <>
+                  <FolderPlus className="w-4 h-4 text-[#C87841]" />
+                  <span>Create Project</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </form>

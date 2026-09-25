@@ -22,7 +22,6 @@ import {
   Briefcase,
   Code2
 } from 'lucide-react';
-import Button from '../../components/Button';
 
 // Recommended skills quick-add list
 const POPULAR_SKILLS = [
@@ -60,21 +59,21 @@ const AVAILABILITY_OPTIONS = [
     value: 'Available',
     label: 'Available',
     desc: 'Ready to join new project squads and take on active tasks.',
-    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    dotClass: 'bg-emerald-500'
+    badgeClass: 'bg-[#EAF2E8] text-[#2D452E] border-[#2D452E]/15',
+    dotClass: 'bg-[#2D452E]'
   },
   {
     value: 'Partially Available',
     label: 'Partially Available',
     desc: 'Can contribute limited hours alongside other semester workload.',
-    badgeClass: 'bg-amber-50 text-amber-700 border-amber-200',
-    dotClass: 'bg-amber-500'
+    badgeClass: 'bg-[#F9F1E2] text-[#8F5E16] border-[#8F5E16]/20',
+    dotClass: 'bg-[#8F5E16]'
   },
   {
     value: 'Not Available',
     label: 'Not Available',
     desc: 'Currently at full capacity or preparing for examinations.',
-    badgeClass: 'bg-rose-50 text-rose-700 border-rose-200',
+    badgeClass: 'bg-rose-50 text-rose-800 border-rose-200',
     dotClass: 'bg-rose-500'
   }
 ];
@@ -200,7 +199,6 @@ export default function StudentProfilePage() {
     setSuccessMessage('');
     setSkillError('');
 
-    // Basic frontend validations
     if (!formData.name.trim()) {
       setErrorMessage('Full Name is required.');
       return;
@@ -228,7 +226,6 @@ export default function StudentProfilePage() {
 
       if (data.success && data.user) {
         setSuccessMessage('Profile updated successfully! Your changes are saved to MongoDB.');
-        // Update context so app-wide state stays in sync
         updateUser(data.user);
       }
     } catch (err) {
@@ -243,8 +240,8 @@ export default function StudentProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-9 h-9 text-indigo-600 animate-spin" />
-        <p className="text-sm font-medium text-slate-500">Loading student profile...</p>
+        <Loader2 className="w-8 h-8 text-[#1E281F] animate-spin" />
+        <p className="text-xs font-semibold text-stone-500">Loading student profile...</p>
       </div>
     );
   }
@@ -256,46 +253,57 @@ export default function StudentProfilePage() {
         <div>
           <Link
             to="/student/dashboard"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C87841] hover:text-[#A35222] transition-colors mb-2"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Student Dashboard
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Student Profile & Skills
-          </h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Keep your technical skills, role preferences, and availability updated for accurate team matching.
-          </p>
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#1E281F] flex items-center justify-center shadow-md shadow-[#1E281F]/15">
+              <User className="w-5 h-5 text-[#FAF8F4]" />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1C1D1B] tracking-tight">
+                Student Profile & Skills
+              </h1>
+              <p className="text-xs sm:text-sm text-[#525850]">
+                Keep your technical skills, role preferences, and availability updated for accurate team matching.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
+          <button
             type="button"
-            variant="primary"
-            size="md"
-            icon={isSaving ? Loader2 : Save}
-            iconPosition="left"
             onClick={handleSubmit}
             disabled={isSaving}
-            className="shadow-sm shadow-indigo-500/20"
+            className="px-6 py-2.5 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-60"
           >
-            {isSaving ? 'Saving Changes...' : 'Save Profile'}
-          </Button>
+            {isSaving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-[#C87841]" />
+                <span>Saving Changes...</span>
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 text-[#C87841]" />
+                <span>Save Profile</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
       {/* Feedback Alerts */}
       {successMessage && (
-        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3 text-emerald-800 text-sm shadow-xs animate-fade-in">
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-start gap-3 text-emerald-800 text-sm shadow-xs animate-fade-in">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <span className="font-semibold">Success:</span> {successMessage}
-          </div>
+          <div className="flex-1 font-medium">{successMessage}</div>
           <button
             type="button"
             onClick={() => setSuccessMessage('')}
-            className="text-emerald-500 hover:text-emerald-700 p-1"
+            className="text-emerald-500 hover:text-emerald-700 p-1 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -303,15 +311,13 @@ export default function StudentProfilePage() {
       )}
 
       {errorMessage && (
-        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-sm shadow-xs animate-fade-in">
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-sm shadow-xs animate-fade-in">
           <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <span className="font-semibold">Error:</span> {errorMessage}
-          </div>
+          <div className="flex-1 font-medium">{errorMessage}</div>
           <button
             type="button"
             onClick={() => setErrorMessage('')}
-            className="text-rose-500 hover:text-rose-700 p-1"
+            className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -320,14 +326,14 @@ export default function StudentProfilePage() {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* 1. Basic Information Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center gap-2.5 pb-4 border-b border-stone-100">
+            <div className="w-9 h-9 rounded-xl bg-[#EAF2E8] text-[#2D452E] flex items-center justify-center border border-[#2D452E]/15">
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Academic & Personal Info</h2>
-              <p className="text-xs text-slate-500">Your core institutional identity</p>
+              <h2 className="text-lg font-bold text-[#1C1D1B]">Academic & Personal Info</h2>
+              <p className="text-xs text-stone-500">Your core institutional identity</p>
             </div>
           </div>
 
@@ -336,12 +342,12 @@ export default function StudentProfilePage() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
-                Full Name <span className="text-rose-500">*</span>
+                Full Name <span className="text-[#C87841]">*</span>
               </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <User className="w-4 h-4" />
                 </div>
                 <input
@@ -352,7 +358,7 @@ export default function StudentProfilePage() {
                   onChange={handleInputChange}
                   required
                   placeholder="e.g. Alex Rivera"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -362,16 +368,16 @@ export default function StudentProfilePage() {
               <div className="flex items-center justify-between mb-1.5">
                 <label
                   htmlFor="email"
-                  className="block text-xs font-semibold uppercase tracking-wider text-slate-700"
+                  className="block text-xs font-semibold uppercase tracking-wider text-stone-700"
                 >
                   Institutional Email
                 </label>
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400">
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-stone-400">
                   <Lock className="w-3 h-3" /> Read-only
                 </span>
               </div>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -381,7 +387,7 @@ export default function StudentProfilePage() {
                   value={formData.email}
                   readOnly
                   disabled
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-100 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed select-none"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-stone-100 border border-stone-200 rounded-xl text-sm text-stone-500 cursor-not-allowed select-none"
                 />
               </div>
             </div>
@@ -390,12 +396,12 @@ export default function StudentProfilePage() {
             <div className="sm:col-span-2">
               <label
                 htmlFor="department"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
-                Department / Major <span className="text-rose-500">*</span>
+                Department / Major <span className="text-[#C87841]">*</span>
               </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <Building className="w-4 h-4" />
                 </div>
                 <input
@@ -406,7 +412,7 @@ export default function StudentProfilePage() {
                   onChange={handleInputChange}
                   required
                   placeholder="e.g. Computer Science & Engineering"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -414,20 +420,20 @@ export default function StudentProfilePage() {
         </div>
 
         {/* 2. Technical Skills Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+              <div className="w-9 h-9 rounded-xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center border border-[#C87841]/20">
                 <Code2 className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-slate-900">Technical Skills</h2>
-                <p className="text-xs text-slate-500">
+                <h2 className="text-lg font-bold text-[#1C1D1B]">Technical Skills</h2>
+                <p className="text-xs text-stone-500">
                   Used by our matching engine to recommend complementary teammates
                 </p>
               </div>
             </div>
-            <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-semibold text-[#2D452E] bg-[#EAF2E8] border border-[#2D452E]/15 px-3 py-1 rounded-full">
               {formData.skills.length} {formData.skills.length === 1 ? 'Skill' : 'Skills'}
             </span>
           </div>
@@ -436,14 +442,14 @@ export default function StudentProfilePage() {
           <div>
             <label
               htmlFor="skillInput"
-              className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+              className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
             >
               Add a Technical Skill
             </label>
             <div className="flex gap-2">
               <div className="relative flex-grow shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Sparkles className="w-4 h-4 text-indigo-500" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                  <Sparkles className="w-4 h-4 text-[#C87841]" />
                 </div>
                 <input
                   type="text"
@@ -460,18 +466,17 @@ export default function StudentProfilePage() {
                     }
                   }}
                   placeholder="e.g. React, Docker, Python, PostgreSQL"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
-              <Button
+              <button
                 type="button"
-                variant="secondary"
-                size="md"
-                icon={Plus}
                 onClick={() => handleAddSkill()}
+                className="px-4 py-2.5 rounded-xl bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
               >
-                Add
-              </Button>
+                <Plus className="w-4 h-4 text-[#C87841]" />
+                <span>Add</span>
+              </button>
             </div>
             {skillError && (
               <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
@@ -483,21 +488,21 @@ export default function StudentProfilePage() {
 
           {/* Current Skills Tags */}
           <div>
-            <span className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-2">
               Your Current Skills
             </span>
             {formData.skills.length > 0 ? (
-              <div className="flex flex-wrap gap-2.5 p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+              <div className="flex flex-wrap gap-2.5 p-4 rounded-2xl bg-[#FAF8F4] border border-stone-200/80">
                 {formData.skills.map((skill, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-indigo-700 border border-indigo-200 shadow-xs group hover:border-indigo-300 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#F2EFE9] text-stone-800 border border-stone-300/60 shadow-xs group hover:border-stone-400 transition-all"
                   >
                     <span>{skill}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveSkill(skill)}
-                      className="p-0.5 rounded-full text-indigo-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                      className="p-0.5 rounded-full text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                       title={`Remove ${skill}`}
                     >
                       <X className="w-3.5 h-3.5" />
@@ -506,7 +511,7 @@ export default function StudentProfilePage() {
                 ))}
               </div>
             ) : (
-              <div className="p-6 rounded-xl bg-slate-50 border border-dashed border-slate-300 text-center text-slate-500 text-sm">
+              <div className="p-6 rounded-2xl bg-[#FAF8F4] border border-dashed border-stone-300 text-center text-stone-500 text-xs">
                 No skills added yet. Type a skill above or click from suggestions below.
               </div>
             )}
@@ -514,7 +519,7 @@ export default function StudentProfilePage() {
 
           {/* Popular Skill Suggestions */}
           <div>
-            <span className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-2">
               Popular Quick-Add Suggestions
             </span>
             <div className="flex flex-wrap gap-2">
@@ -528,16 +533,16 @@ export default function StudentProfilePage() {
                     type="button"
                     disabled={isSelected}
                     onClick={() => handleAddSkill(popularSkill)}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       isSelected
-                        ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-60'
-                        : 'bg-white text-slate-700 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 hover:bg-indigo-50/50 shadow-xs cursor-pointer'
+                        ? 'bg-stone-100 text-stone-400 border border-stone-200 cursor-not-allowed opacity-60'
+                        : 'bg-white text-stone-700 hover:text-[#1E281F] hover:border-stone-400 border border-stone-200 shadow-xs cursor-pointer'
                     }`}
                   >
                     {isSelected ? (
-                      <Check className="w-3 h-3 text-emerald-500" />
+                      <Check className="w-3 h-3 text-emerald-600" />
                     ) : (
-                      <Plus className="w-3 h-3 text-slate-400" />
+                      <Plus className="w-3 h-3 text-stone-400" />
                     )}
                     {popularSkill}
                   </button>
@@ -548,14 +553,14 @@ export default function StudentProfilePage() {
         </div>
 
         {/* 3. Preferred Roles Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center gap-2.5 pb-4 border-b border-stone-100">
+            <div className="w-9 h-9 rounded-xl bg-[#F7EFE1] text-[#7A5418] flex items-center justify-center border border-[#7A5418]/20">
               <Briefcase className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Preferred Project Roles</h2>
-              <p className="text-xs text-slate-500">
+              <h2 className="text-lg font-bold text-[#1C1D1B]">Preferred Project Roles</h2>
+              <p className="text-xs text-stone-500">
                 Select the team roles you are most interested in executing
               </p>
             </div>
@@ -569,21 +574,21 @@ export default function StudentProfilePage() {
                   key={idx}
                   type="button"
                   onClick={() => handleToggleRole(role)}
-                  className={`p-3.5 rounded-xl border text-left flex items-center justify-between transition-all duration-200 ${
+                  className={`p-4 rounded-2xl border text-left flex items-center justify-between transition-all duration-200 cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-50/80 border-indigo-500 text-indigo-900 shadow-xs ring-1 ring-indigo-500'
-                      : 'bg-slate-50 hover:bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+                      ? 'bg-[#FAF8F4] border-[#1E281F] text-[#1E281F] shadow-xs ring-1 ring-[#1E281F]'
+                      : 'bg-[#FDFCF9] hover:bg-white border-stone-200 text-stone-700 hover:border-stone-300'
                   }`}
                 >
                   <span className="text-sm font-semibold">{role}</span>
                   <div
                     className={`w-5 h-5 rounded-md flex items-center justify-center border transition-colors ${
                       isSelected
-                        ? 'bg-indigo-600 border-indigo-600 text-white'
-                        : 'border-slate-300 bg-white'
+                        ? 'bg-[#1E281F] border-[#1E281F] text-white'
+                        : 'border-stone-300 bg-white'
                     }`}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-[#C87841]" />}
                   </div>
                 </button>
               );
@@ -592,14 +597,14 @@ export default function StudentProfilePage() {
         </div>
 
         {/* 4. Availability Status Section */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center gap-2.5 pb-4 border-b border-stone-100">
+            <div className="w-9 h-9 rounded-xl bg-[#EAF2E8] text-[#2D452E] flex items-center justify-center border border-[#2D452E]/15">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Project Availability</h2>
-              <p className="text-xs text-slate-500">
+              <h2 className="text-lg font-bold text-[#1C1D1B]">Project Availability</h2>
+              <p className="text-xs text-stone-500">
                 Signals your bandwidth to leaders recruiting for semester projects
               </p>
             </div>
@@ -612,10 +617,10 @@ export default function StudentProfilePage() {
                 <div
                   key={idx}
                   onClick={() => handleSelectAvailability(opt.value)}
-                  className={`cursor-pointer p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between ${
+                  className={`cursor-pointer p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-indigo-50/60 border-indigo-500 ring-2 ring-indigo-500/20 shadow-xs'
-                      : 'bg-slate-50/80 hover:bg-white border-slate-200 hover:border-slate-300'
+                      ? 'bg-[#FAF8F4] border-[#1E281F] ring-1 ring-[#1E281F] shadow-xs'
+                      : 'bg-[#FDFCF9] hover:bg-white border-stone-200 hover:border-stone-300'
                   }`}
                 >
                   <div>
@@ -625,12 +630,12 @@ export default function StudentProfilePage() {
                         {opt.label}
                       </span>
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                        isSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'
+                        isSelected ? 'border-[#1E281F] bg-[#1E281F] text-white' : 'border-stone-300 bg-white'
                       }`}>
-                        {isSelected && <Check className="w-2.5 h-2.5" />}
+                        {isSelected && <Check className="w-2.5 h-2.5 text-[#C87841]" />}
                       </div>
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed mt-1">
+                    <p className="text-xs text-stone-600 leading-relaxed mt-1">
                       {opt.desc}
                     </p>
                   </div>
@@ -641,14 +646,14 @@ export default function StudentProfilePage() {
         </div>
 
         {/* 5. External Proof Links (GitHub & Portfolio) */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-slate-100">
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+          <div className="flex items-center gap-2.5 pb-4 border-b border-stone-100">
+            <div className="w-9 h-9 rounded-xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center border border-[#C87841]/20">
               <Globe className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Developer Proof Links</h2>
-              <p className="text-xs text-slate-500">
+              <h2 className="text-lg font-bold text-[#1C1D1B]">Developer Proof Links</h2>
+              <p className="text-xs text-stone-500">
                 Optional links to your GitHub profile and online portfolio
               </p>
             </div>
@@ -659,12 +664,12 @@ export default function StudentProfilePage() {
             <div>
               <label
                 htmlFor="githubUrl"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
                 GitHub Profile URL
               </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <Github className="w-4 h-4" />
                 </div>
                 <input
@@ -674,7 +679,7 @@ export default function StudentProfilePage() {
                   value={formData.githubUrl}
                   onChange={handleInputChange}
                   placeholder="https://github.com/yourusername"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -683,12 +688,12 @@ export default function StudentProfilePage() {
             <div>
               <label
                 htmlFor="portfolioUrl"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5"
               >
                 Portfolio / Personal Website URL
               </label>
-              <div className="relative rounded-lg shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div className="relative rounded-xl shadow-xs">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                   <Globe className="w-4 h-4" />
                 </div>
                 <input
@@ -698,7 +703,7 @@ export default function StudentProfilePage() {
                   value={formData.portfolioUrl}
                   onChange={handleInputChange}
                   placeholder="https://yourportfolio.dev"
-                  className="block w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 bg-[#F7F5F0] border border-stone-300 rounded-xl text-sm text-[#1C1D1B] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -706,30 +711,34 @@ export default function StudentProfilePage() {
         </div>
 
         {/* Bottom Save Action Bar */}
-        <div className="p-4 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-slate-500 text-center sm:text-left">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-stone-500 text-center sm:text-left">
             Changes will update your developer skill profile immediately.
           </div>
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <Button
+            <Link
               to="/student/dashboard"
-              variant="outline"
-              size="md"
-              className="w-full sm:w-auto justify-center"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full border border-stone-300 hover:bg-stone-100 text-stone-800 text-xs font-semibold text-center transition-all"
             >
               Cancel
-            </Button>
-            <Button
+            </Link>
+            <button
               type="submit"
-              variant="primary"
-              size="md"
-              icon={isSaving ? Loader2 : Save}
-              iconPosition="left"
               disabled={isSaving}
-              className="w-full sm:w-auto justify-center shadow-sm shadow-indigo-500/20"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
             >
-              {isSaving ? 'Saving...' : 'Save Profile'}
-            </Button>
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-[#C87841]" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 text-[#C87841]" />
+                  <span>Save Profile</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </form>

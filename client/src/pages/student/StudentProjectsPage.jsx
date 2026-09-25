@@ -71,72 +71,79 @@ export default function StudentProjectsPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md shadow-purple-500/20">
-              <FolderGit2 className="w-6 h-6" />
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-stone-100">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#1E281F] text-white flex items-center justify-center shadow-md shadow-[#1E281F]/15">
+              <FolderGit2 className="w-5 h-5 text-[#FAF8F4]" />
             </div>
             <div>
-              <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#60685D] uppercase tracking-wider block">
                 Active Teams
               </span>
-              <h1 className="text-2xl font-bold text-slate-900">My Projects</h1>
+              <h1 className="text-2xl font-bold text-[#1C1D1B] tracking-tight">My Projects</h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button to="/projects" variant="primary" size="sm" icon={ArrowRight} iconPosition="right">
-              Explore Projects
-            </Button>
-            <Button to="/student/dashboard" variant="outline" size="sm">
+          <div className="flex items-center gap-2.5">
+            <Link
+              to="/projects"
+              className="px-4 py-2 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
+            >
+              <span>Explore Projects</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#C87841]" />
+            </Link>
+            <Link
+              to="/student/dashboard"
+              className="px-4 py-2 rounded-full border border-stone-300 hover:bg-stone-100 text-stone-800 text-xs font-semibold transition-all"
+            >
               Dashboard
-            </Button>
+            </Link>
           </div>
         </div>
 
         {/* Projects List */}
         {loading ? (
-          <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-            <Loader2 className="w-7 h-7 animate-spin text-purple-600" />
+          <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+            <Loader2 className="w-7 h-7 animate-spin text-[#1E281F]" />
             <span>Loading your joined projects...</span>
           </div>
         ) : joinedProjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {joinedProjects.map((proj) => {
               const teamSize = 1 + (proj.members?.length || 0);
               return (
                 <div
                   key={proj._id}
-                  className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-purple-300 hover:shadow-xs transition-all space-y-4 flex flex-col justify-between"
+                  className="p-5 rounded-2xl border border-stone-200/80 bg-[#FDFCF9] hover:border-stone-400 hover:shadow-md transition-all space-y-4 flex flex-col justify-between"
                 >
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-md border border-purple-100">
+                      <span className="text-[11px] font-semibold text-[#2D452E] bg-[#EAF2E8] px-2.5 py-0.5 rounded-full border border-[#2D452E]/15">
                         {proj.category}
                       </span>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                        <span className="text-[11px] font-bold text-stone-700 bg-[#F2EFE9] px-2.5 py-0.5 rounded-full border border-stone-200">
                           {teamSize} / {proj.maxTeamSize} Members
                         </span>
-                        <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                           {proj.status}
                         </span>
                       </div>
                     </div>
 
-                    <h3 className="font-bold text-slate-900 text-base line-clamp-1">
+                    <h3 className="font-bold text-[#1C1D1B] text-base line-clamp-1">
                       {proj.title}
                     </h3>
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-[#525850] line-clamp-2 leading-relaxed">
                       {proj.description}
                     </p>
 
-                    <div className="flex flex-wrap gap-1 pt-1">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {proj.requiredSkills?.slice(0, 3).map((s, idx) => (
                         <span
                           key={idx}
-                          className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700"
+                          className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#F2EFE9] text-stone-800 border border-stone-300/60"
                         >
                           {s}
                         </span>
@@ -144,15 +151,16 @@ export default function StudentProjectsPage() {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-500">
-                      Leader: <strong>{proj.leader?.name}</strong>
+                  <div className="pt-3 border-t border-stone-200/70 flex items-center justify-between text-xs">
+                    <span className="text-stone-600">
+                      Leader: <strong className="text-[#1C1D1B]">{proj.leader?.name}</strong>
                     </span>
                     <Link
                       to={`/projects/${proj._id}`}
-                      className="text-purple-600 font-semibold hover:underline flex items-center gap-1"
+                      className="px-3.5 py-1.5 rounded-full bg-[#1E281F] text-white font-semibold hover:bg-[#151D16] shadow-xs hover:shadow-md transition-all flex items-center gap-1.5"
                     >
-                      Open Workspace <ArrowRight className="w-3.5 h-3.5" />
+                      <span>Open Workspace</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#C87841]" />
                     </Link>
                   </div>
                 </div>
@@ -160,21 +168,28 @@ export default function StudentProjectsPage() {
             })}
           </div>
         ) : (
-          <div className="p-12 rounded-2xl border border-dashed border-slate-200 text-center space-y-3">
-            <FolderGit2 className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="text-sm font-bold text-slate-700">
+          <div className="p-12 rounded-3xl border border-dashed border-stone-300 text-center space-y-3 bg-[#FAF8F4]/50">
+            <FolderGit2 className="w-10 h-10 text-stone-400 mx-auto" />
+            <h3 className="text-sm font-bold text-[#1C1D1B]">
               You have not joined any project teams yet.
             </h3>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            <p className="text-xs text-stone-500 max-w-sm mx-auto">
               Explore available projects to discover initiatives matching your skills, or accept pending invitations.
             </p>
-            <div className="pt-2 flex items-center justify-center gap-2">
-              <Button to="/projects" variant="primary" size="sm">
-                Explore Projects
-              </Button>
-              <Button to="/student/invitations" variant="outline" size="sm">
+            <div className="pt-2 flex items-center justify-center gap-2.5">
+              <Link
+                to="/projects"
+                className="px-5 py-2.5 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5"
+              >
+                <span>Explore Projects</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#C87841]" />
+              </Link>
+              <Link
+                to="/student/invitations"
+                className="px-5 py-2.5 rounded-full border border-stone-300 hover:bg-stone-100 text-stone-800 text-xs font-semibold transition-all"
+              >
                 View Invitations
-              </Button>
+              </Link>
             </div>
           </div>
         )}

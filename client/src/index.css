@@ -24,14 +24,149 @@
     border: 1px solid rgba(51, 65, 85, 0.5);
   }
 
+  .glass-void {
+    background: rgba(18, 11, 34, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .glass-void-gold {
+    background: rgba(24, 15, 42, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.15);
+  }
+
   .text-gradient {
     background: linear-gradient(135deg, #4338ca 0%, #4f46e5 50%, #0284c7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  .bg-radial-grid {
-    background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
-    background-size: 24px 24px;
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 40%, #a855f7 80%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #fffbeb 0%, #fde047 35%, #eab308 70%, #ca8a04 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-metallic {
+    background: linear-gradient(135deg, #ffffff 20%, #e2e8f0 50%, #94a3b8 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-radial-warm {
+    background: radial-gradient(circle at 50% 50%, rgba(200, 120, 65, 0.08) 0%, rgba(130, 149, 124, 0.12) 45%, rgba(250, 248, 244, 0) 75%);
+  }
+
+  .bg-linen-surface {
+    background: #FAF8F4;
+  }
+
+  .card-tactile {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(27, 28, 26, 0.07);
+    box-shadow: 0 10px 30px -5px rgba(74, 90, 72, 0.07), 0 4px 12px -2px rgba(27, 28, 26, 0.03);
+  }
+
+  .card-tactile-hover {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  }
+  .card-tactile-hover:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 40px -8px rgba(74, 90, 72, 0.12), 0 8px 18px -4px rgba(27, 28, 26, 0.05);
+    border-color: rgba(74, 90, 72, 0.22);
+  }
+
+  .card-moss-acrylic {
+    background: rgba(37, 50, 39, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  }
+
+  .card-moss-acrylic:hover {
+    transform: translateY(-10px) scale(1.02) !important;
+    border-color: rgba(200, 120, 65, 0.4);
+    box-shadow: 0 12px 30px rgba(200, 120, 65, 0.2), 0 20px 40px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  .text-editorial-serif {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+  }
+
+  @keyframes floatLeft45 {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes floatRight45 {
+    0%, 100% {
+      transform: translateY(-8px);
+    }
+    50% {
+      transform: translateY(0px);
+    }
+  }
+
+  .animate-float-left-45 {
+    animation: floatLeft45 4.5s ease-in-out infinite;
+  }
+
+  .animate-float-right-45 {
+    animation: floatRight45 4.5s ease-in-out infinite;
+  }
+
+  @keyframes flowDash {
+    0% {
+      stroke-dashoffset: 48;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-flow-dash {
+    stroke-dasharray: 6 6;
+    animation: flowDash 2.5s linear infinite;
+  }
+}
+
+/* Lenis Smooth Scrolling Styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

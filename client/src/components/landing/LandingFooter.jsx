@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { GraduationCap, ArrowRight, Check } from 'lucide-react';
 
-export default function Footer() {
+export default function LandingFooter() {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);

@@ -21,9 +21,9 @@ import {
   Play,
   RotateCcw,
   Sparkles,
-  Info
+  Info,
+  X
 } from 'lucide-react';
-import Button from '../../components/Button';
 
 export default function StudentTasksPage() {
   const { user } = useAuth();
@@ -104,7 +104,7 @@ export default function StudentTasksPage() {
       if (data.success) {
         setStatusMessage({
           type: 'success',
-          text: 'Proof submitted. Waiting for review.',
+          text: 'Proof submitted successfully. Waiting for team review.',
         });
         setSelectedTaskForProof(null);
         setProofForm({ proofUrl: '', description: '' });
@@ -143,13 +143,24 @@ export default function StudentTasksPage() {
   const getPriorityBadge = (priority) => {
     switch (priority) {
       case 'High':
-        return 'bg-rose-50 text-rose-700 border-rose-200';
+        return 'bg-[#FBECE3] text-[#C87841] border-[#C87841]/20';
       case 'Medium':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
+        return 'bg-[#F9F1E2] text-[#8F5E16] border-[#8F5E16]/20';
       case 'Low':
-        return 'bg-slate-50 text-slate-700 border-slate-200';
       default:
-        return 'bg-slate-50 text-slate-600 border-slate-200';
+        return 'bg-[#EAF2E8] text-[#2D452E] border-[#2D452E]/15';
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'Completed':
+        return 'bg-[#EAF2E8] text-[#2D452E] border-[#2D452E]/15';
+      case 'In Progress':
+        return 'bg-[#FBECE3] text-[#C87841] border-[#C87841]/20';
+      case 'Todo':
+      default:
+        return 'bg-[#F2EFE9] text-stone-700 border-stone-200';
     }
   };
 
@@ -166,50 +177,59 @@ export default function StudentTasksPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
       {/* Top Header Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
-              <ListTodo className="w-6 h-6" />
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-stone-100">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#1E281F] text-white flex items-center justify-center shadow-md shadow-[#1E281F]/15">
+              <ListTodo className="w-5 h-5 text-[#FAF8F4]" />
             </div>
             <div>
-              <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
-                Workload Management
+              <span className="text-xs font-semibold text-[#60685D] uppercase tracking-wider block">
+                WORKLOAD MANAGEMENT
               </span>
-              <h1 className="text-2xl font-bold text-slate-900">Your Assigned Tasks</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1C1D1B] tracking-tight">
+                Your Assigned Tasks
+              </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button to="/student/dashboard" variant="outline" size="sm">
+          <div className="flex items-center gap-2.5">
+            <Link
+              to="/student/dashboard"
+              className="px-4 py-2 rounded-full border border-stone-300 hover:bg-stone-100 text-stone-800 text-xs font-semibold transition-all"
+            >
               Dashboard
-            </Button>
-            <Button to="/projects" variant="primary" size="sm">
-              Explore Projects
-            </Button>
+            </Link>
+            <Link
+              to="/projects"
+              className="px-4 py-2 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-1.5"
+            >
+              <span>Explore Projects</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#C87841]" />
+            </Link>
           </div>
         </div>
 
         {/* Feedback Alert */}
         {statusMessage.text && (
           <div
-            className={`p-4 rounded-xl text-xs font-semibold border flex items-center justify-between ${
+            className={`p-4 rounded-2xl text-xs font-semibold border flex items-center justify-between shadow-xs animate-fade-in ${
               statusMessage.type === 'error'
                 ? 'bg-rose-50 text-rose-800 border-rose-200'
                 : 'bg-emerald-50 text-emerald-800 border-emerald-200'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               {statusMessage.type === 'error' ? (
-                <AlertCircle className="w-4 h-4" />
+                <AlertCircle className="w-4 h-4 text-rose-600" />
               ) : (
-                <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               )}
               <span>{statusMessage.text}</span>
             </div>
             <button
               onClick={() => setStatusMessage({ type: '', text: '' })}
-              className="text-xs font-bold hover:underline"
+              className="text-xs font-bold hover:underline cursor-pointer"
             >
               Dismiss
             </button>
@@ -217,7 +237,7 @@ export default function StudentTasksPage() {
         )}
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+        <div className="flex items-center gap-2 border-b border-stone-100 pb-3">
           {['All', 'Todo', 'In Progress', 'Completed'].map((filter) => {
             const count =
               filter === 'All'
@@ -228,18 +248,18 @@ export default function StudentTasksPage() {
               <button
                 key={filter}
                 onClick={() => setStatusFilter(filter)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   statusFilter === filter
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[#1E281F] text-white shadow-xs'
+                    : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
                 }`}
               >
                 <span>{filter}</span>
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
                     statusFilter === filter
-                      ? 'bg-white text-indigo-600'
-                      : 'bg-slate-100 text-slate-700'
+                      ? 'bg-white text-[#1E281F]'
+                      : 'bg-[#FAF8F4] text-stone-800'
                   }`}
                 >
                   {count}
@@ -251,8 +271,8 @@ export default function StudentTasksPage() {
 
         {/* Task Cards */}
         {loading ? (
-          <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-            <Loader2 className="w-7 h-7 animate-spin text-indigo-600" />
+          <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+            <Loader2 className="w-7 h-7 animate-spin text-[#1E281F]" />
             <span>Loading your assigned tasks...</span>
           </div>
         ) : filteredTasks.length > 0 ? (
@@ -260,42 +280,38 @@ export default function StudentTasksPage() {
             {filteredTasks.map((t) => (
               <div
                 key={t._id}
-                className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 shadow-xs space-y-4 transition-all"
+                className="p-5 sm:p-6 rounded-2xl border border-stone-200/80 bg-[#FDFCF9] hover:border-stone-400 hover:shadow-md shadow-xs space-y-4 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-slate-900 text-base">{t.title}</h3>
+                      <h3 className="font-bold text-[#1C1D1B] text-base">{t.title}</h3>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${getPriorityBadge(
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getPriorityBadge(
                           t.priority
                         )}`}
                       >
                         {t.priority}
                       </span>
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
-                          t.status === 'Completed'
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : t.status === 'In Progress'
-                            ? 'bg-blue-50 text-blue-700 border-blue-200'
-                            : 'bg-slate-100 text-slate-700 border-slate-200'
-                        }`}
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getStatusBadge(
+                          t.status
+                        )}`}
                       >
                         {t.status}
                       </span>
                     </div>
 
-                    <div className="text-xs text-slate-500 flex items-center gap-3">
+                    <div className="text-xs text-[#525850] flex items-center gap-3">
                       <span>
                         Project:{' '}
-                        <strong className="text-slate-800">
+                        <strong className="text-[#1C1D1B]">
                           {t.project?.title || 'Capstone Project'}
                         </strong>
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                        <Clock className="w-3.5 h-3.5 text-[#C87841]" />
                         Due: {formatDate(t.dueDate)}
                       </span>
                     </div>
@@ -305,28 +321,29 @@ export default function StudentTasksPage() {
                   <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                     <Link
                       to={`/projects/${t.project?._id || t.project}`}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                      className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F2EFE9] text-stone-800 hover:bg-stone-200 transition-colors flex items-center gap-1"
                     >
-                      View in Project
+                      <span>View in Project</span>
+                      <ArrowRight className="w-3 h-3 text-[#C87841]" />
                     </Link>
                   </div>
                 </div>
 
                 {t.description && (
-                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/60 text-xs text-slate-700 leading-relaxed">
+                  <div className="p-3.5 rounded-xl bg-[#FAF8F4] border border-stone-200 text-xs text-[#525850] leading-relaxed">
                     {t.description}
                   </div>
                 )}
 
                 {/* Bottom Action Toolbar */}
-                <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div className="pt-2 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   {/* Status Toggle Buttons */}
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-500 font-medium">Update Status:</span>
+                    <span className="text-stone-500 font-medium">Update Status:</span>
                     {t.status === 'Todo' && (
                       <button
                         onClick={() => handleUpdateStatus(t._id, 'In Progress')}
-                        className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-full bg-[#FBECE3] text-[#C87841] border border-[#C87841]/20 hover:bg-[#F7DAC8] font-bold transition-colors flex items-center gap-1 cursor-pointer"
                       >
                         <Play className="w-3 h-3" />
                         Start Task
@@ -335,7 +352,7 @@ export default function StudentTasksPage() {
                     {t.status === 'In Progress' && (
                       <button
                         onClick={() => handleUpdateStatus(t._id, 'Completed')}
-                        className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-full bg-[#EAF2E8] text-[#2D452E] border border-[#2D452E]/15 hover:bg-[#D8E6D5] font-bold transition-colors flex items-center gap-1 cursor-pointer"
                       >
                         <CheckCircle2 className="w-3 h-3" />
                         Mark as Completed
@@ -344,7 +361,7 @@ export default function StudentTasksPage() {
                     {t.status === 'Completed' && (
                       <button
                         onClick={() => handleUpdateStatus(t._id, 'In Progress')}
-                        className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-full bg-[#F2EFE9] text-stone-700 hover:bg-stone-200 font-bold transition-colors flex items-center gap-1 cursor-pointer"
                       >
                         <RotateCcw className="w-3 h-3" />
                         Reopen
@@ -356,15 +373,15 @@ export default function StudentTasksPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleViewProofHistory(t)}
-                      className="px-3 py-1.5 rounded-lg font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
+                      className="px-3 py-1.5 rounded-full font-semibold text-stone-600 hover:bg-stone-100 transition-colors cursor-pointer"
                     >
                       Proof History
                     </button>
                     <button
                       onClick={() => handleOpenProofModal(t)}
-                      className="px-3.5 py-1.5 rounded-lg font-bold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-xs flex items-center gap-1.5"
+                      className="px-4 py-1.5 rounded-full font-bold bg-[#1E281F] text-white hover:bg-[#151D16] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
                     >
-                      <FileCheck2 className="w-3.5 h-3.5" />
+                      <FileCheck2 className="w-3.5 h-3.5 text-[#C87841]" />
                       Submit Proof
                     </button>
                   </div>
@@ -373,10 +390,10 @@ export default function StudentTasksPage() {
             ))}
           </div>
         ) : (
-          <div className="p-12 rounded-2xl border border-dashed border-slate-200 text-center space-y-3">
-            <ListTodo className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="text-sm font-bold text-slate-700">No tasks assigned yet.</h3>
-            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <div className="p-12 rounded-3xl border border-dashed border-stone-300 text-center space-y-3 bg-[#FAF8F4]/50">
+            <ListTodo className="w-10 h-10 text-stone-400 mx-auto" />
+            <h3 className="text-sm font-bold text-[#1C1D1B]">No tasks assigned yet.</h3>
+            <p className="text-xs text-stone-500 max-w-sm mx-auto">
               When your team leader assigns milestone deliverables to you, they will appear here.
             </p>
           </div>
@@ -387,27 +404,27 @@ export default function StudentTasksPage() {
       {/* MODAL: SUBMIT PROOF */}
       {/* ==================================================== */}
       {selectedTaskForProof && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-200 space-y-5 animate-scaleUp">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-stone-200 space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <div>
-                <h3 className="text-lg font-bold text-slate-900">Submit Verification Proof</h3>
-                <p className="text-xs text-slate-500">
-                  Task: <strong>{selectedTaskForProof.title}</strong>
+                <h3 className="text-lg font-bold text-[#1C1D1B]">Submit Verification Proof</h3>
+                <p className="text-xs text-[#525850]">
+                  Task: <strong className="text-[#1C1D1B]">{selectedTaskForProof.title}</strong>
                 </p>
               </div>
               <button
                 onClick={() => setSelectedTaskForProof(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <form onSubmit={handleSubmitProof} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Proof URL (GitHub commit URL, repository, or live demo) *
+                <label className="block font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                  Proof URL (GitHub commit URL, repository, or live demo) <span className="text-[#C87841]">*</span>
                 </label>
                 <input
                   type="url"
@@ -415,16 +432,16 @@ export default function StudentTasksPage() {
                   placeholder="https://github.com/username/project/commit/xxxx"
                   value={proofForm.proofUrl}
                   onChange={(e) => setProofForm({ ...proofForm, proofUrl: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-stone-500 mt-1">
                   Provide a direct URL to verify your implementation.
                 </p>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Description of Work Done *
+                <label className="block font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                  Description of Work Done <span className="text-[#C87841]">*</span>
                 </label>
                 <textarea
                   rows={4}
@@ -432,21 +449,35 @@ export default function StudentTasksPage() {
                   placeholder="Implemented JWT authentication, tested sign-up and login endpoints..."
                   value={proofForm.description}
                   onChange={(e) => setProofForm({ ...proofForm, description: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setSelectedTaskForProof(null)}
-                  className="px-4 py-2 rounded-xl font-semibold text-slate-600 hover:bg-slate-100"
+                  className="px-4 py-2 rounded-full font-semibold text-stone-700 hover:bg-stone-100 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <Button type="submit" variant="primary" size="sm" disabled={submittingProof}>
-                  {submittingProof ? 'Submitting...' : 'Submit Proof'}
-                </Button>
+                <button
+                  type="submit"
+                  disabled={submittingProof}
+                  className="px-5 py-2 rounded-full font-bold bg-[#1E281F] hover:bg-[#151D16] text-white shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  {submittingProof ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C87841]" />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FileCheck2 className="w-3.5 h-3.5 text-[#C87841]" />
+                      <span>Submit Proof</span>
+                    </>
+                  )}
+                </button>
               </div>
             </form>
           </div>
@@ -457,26 +488,26 @@ export default function StudentTasksPage() {
       {/* MODAL: PROOF HISTORY & REJECTION FEEDBACK */}
       {/* ==================================================== */}
       {viewingProofTask && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-200 space-y-5 animate-scaleUp max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-stone-200 space-y-5 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <div>
-                <h3 className="text-lg font-bold text-slate-900">Proof Submissions & Feedback</h3>
-                <p className="text-xs text-slate-500">
-                  Task: <strong>{viewingProofTask.title}</strong>
+                <h3 className="text-lg font-bold text-[#1C1D1B]">Proof Submissions & Feedback</h3>
+                <p className="text-xs text-[#525850]">
+                  Task: <strong className="text-[#1C1D1B]">{viewingProofTask.title}</strong>
                 </p>
               </div>
               <button
                 onClick={() => setViewingProofTask(null)}
-                className="text-slate-400 hover:text-slate-600"
+                className="p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {loadingHistory ? (
-              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-                <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+                <Loader2 className="w-6 h-6 animate-spin text-[#1E281F]" />
                 <span>Loading proof submissions...</span>
               </div>
             ) : proofHistory.length > 0 ? (
@@ -484,65 +515,65 @@ export default function StudentTasksPage() {
                 {proofHistory.map((p) => (
                   <div
                     key={p._id}
-                    className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2"
+                    className="p-4 rounded-2xl border border-stone-200 bg-[#FDFCF9] space-y-2"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold text-[#1C1D1B]">
                         Submitted on {formatDate(p.submittedAt)}
                       </span>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                           p.status === 'Approved'
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                            ? 'bg-[#EAF2E8] text-[#2D452E] border-[#2D452E]/15'
                             : p.status === 'Rejected'
-                            ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                            : 'bg-amber-50 text-amber-700 border border-amber-200'
+                            ? 'bg-rose-50 text-rose-700 border-rose-200'
+                            : 'bg-[#FBECE3] text-[#C87841] border-[#C87841]/20'
                         }`}
                       >
                         {p.status}
                       </span>
                     </div>
 
-                    <div className="text-slate-600 flex items-center gap-1 font-mono truncate">
-                      <span className="font-semibold text-slate-700">URL:</span>
+                    <div className="text-stone-600 flex items-center gap-1 font-mono truncate">
+                      <span className="font-semibold text-stone-700">URL:</span>
                       <a
                         href={p.proofUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-indigo-600 hover:underline truncate"
+                        className="text-[#C87841] hover:underline truncate"
                       >
                         {p.proofUrl}
                       </a>
                     </div>
 
-                    <p className="text-slate-700 bg-white p-2.5 rounded-lg border border-slate-200/60 leading-relaxed">
+                    <p className="text-stone-700 bg-white p-3 rounded-xl border border-stone-200 leading-relaxed">
                       {p.description}
                     </p>
 
                     {/* Rejection / Evaluation Feedback */}
                     {p.feedback && (
-                      <div className="p-3 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-950 space-y-0.5">
-                        <div className="font-bold flex items-center gap-1.5">
-                          <Info className="w-3.5 h-3.5 text-indigo-600" />
+                      <div className="p-3 rounded-xl bg-[#FAF8F4] border border-[#C87841]/30 text-stone-800 space-y-1">
+                        <div className="font-bold flex items-center gap-1.5 text-[#C87841]">
+                          <Info className="w-3.5 h-3.5 text-[#C87841]" />
                           Reviewer Feedback ({p.reviewedBy?.name || 'Reviewer'}):
                         </div>
-                        <div className="text-slate-700">{p.feedback}</div>
+                        <div className="text-stone-700">{p.feedback}</div>
                       </div>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-xs text-slate-500 bg-slate-50 rounded-xl">
+              <div className="p-8 text-center text-xs text-stone-500 bg-[#FAF8F4] rounded-2xl">
                 No proof submissions yet for this task.
               </div>
             )}
 
-            <div className="flex items-center justify-end pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end pt-3 border-t border-stone-100">
               <button
                 type="button"
                 onClick={() => setViewingProofTask(null)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                className="px-5 py-2 rounded-full text-xs font-semibold text-stone-700 hover:bg-stone-100 cursor-pointer"
               >
                 Close
               </button>

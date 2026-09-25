@@ -12,17 +12,11 @@ import {
 import {
   Activity,
   LogOut,
-  User,
   Building,
-  Mail,
-  Shield,
-  CheckCircle,
   Edit3,
   Sparkles,
   Briefcase,
   Clock,
-  Github,
-  Globe,
   ArrowRight,
   Code2,
   FolderGit2,
@@ -30,12 +24,7 @@ import {
   ListTodo,
   CheckCircle2,
   XCircle,
-  ExternalLink,
-  Tag,
-  Users,
-  Check
 } from 'lucide-react';
-import Button from '../../components/Button';
 
 export default function StudentDashboard() {
   const { user, logout, updateUser } = useAuth();
@@ -174,13 +163,13 @@ export default function StudentDashboard() {
   const getAvailabilityClass = (avail) => {
     switch (avail) {
       case 'Available':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+        return 'bg-emerald-50 text-emerald-800 border-emerald-200';
       case 'Partially Available':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
+        return 'bg-amber-50 text-amber-800 border-amber-200';
       case 'Not Available':
-        return 'bg-rose-50 text-rose-700 border-rose-200';
+        return 'bg-rose-50 text-rose-800 border-rose-200';
       default:
-        return 'bg-slate-50 text-slate-700 border-slate-200';
+        return 'bg-stone-50 text-stone-700 border-stone-200';
     }
   };
 
@@ -195,137 +184,148 @@ export default function StudentDashboard() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       {/* Top Action / Alerts */}
       {actionMessage.text && (
         <div
-          className={`p-4 rounded-xl text-xs font-semibold border flex items-center justify-between ${
+          className={`p-5 rounded-3xl text-sm font-semibold border flex items-center justify-between shadow-sm animate-fade-in ${
             actionMessage.type === 'error'
               ? 'bg-rose-50 text-rose-800 border-rose-200'
               : 'bg-emerald-50 text-emerald-800 border-emerald-200'
           }`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {actionMessage.type === 'error' ? (
-              <XCircle className="w-4 h-4" />
+              <XCircle className="w-5 h-5 text-rose-600" />
             ) : (
-              <CheckCircle2 className="w-4 h-4" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
             )}
             <span>{actionMessage.text}</span>
           </div>
           <button
             onClick={() => setActionMessage({ type: '', text: '' })}
-            className="hover:underline"
+            className="hover:underline text-stone-600 font-bold cursor-pointer text-xs uppercase tracking-wider"
           >
             Dismiss
           </button>
         </div>
       )}
 
-      {/* Main Workspace Header Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
-              <Activity className="w-6 h-6" />
+      {/* Main Workspace Surface Container (Bento Glass Card) */}
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/80 shadow-[0_15px_35px_rgba(30,40,31,0.05)] space-y-8">
+        
+        {/* Workspace Top Header Banner */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-stone-200/70">
+          <div className="flex items-center gap-4">
+            <div className="w-13 h-13 rounded-2xl bg-[#1E281F] flex items-center justify-center shadow-lg shadow-[#1E281F]/20">
+              <svg className="w-6 h-6 text-[#FAF8F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12h3.5l2.5-6 4 12 2.5-6H20" />
+                <circle cx="12" cy="12" r="1.8" fill="#C87841" stroke="#C87841" />
+              </svg>
             </div>
             <div>
-              <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
-                Student Workspace
+              <span className="text-sm font-bold tracking-widest text-[#4A5A48] uppercase block">
+                STUDENT WORKSPACE
               </span>
-              <h1 className="text-2xl font-bold text-slate-900">ProjectPulse</h1>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-[#1C1D1B] tracking-tight">ProjectPulse</h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <Button
+          <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+            <Link
               to="/projects"
-              variant="outline"
-              size="md"
-              icon={ArrowRight}
-              iconPosition="right"
-              className="bg-white border-slate-200"
+              className="px-6 py-3 rounded-full bg-[#1E281F] hover:bg-[#2B3A2C] text-white text-sm font-bold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
-              Explore Projects
-            </Button>
-            <Button
+              <span>Explore Projects</span>
+              <ArrowRight className="w-4 h-4 text-[#C87841]" />
+            </Link>
+            
+            <Link
               to="/student/profile"
-              variant="primary"
-              size="md"
-              icon={Edit3}
-              iconPosition="left"
-              className="shadow-sm shadow-indigo-500/20"
+              className="px-6 py-3 rounded-full bg-[#C87841] hover:bg-[#B46733] text-white text-sm font-bold shadow-md shadow-[#C87841]/20 hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
-              Edit Profile
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              icon={LogOut}
-              iconPosition="left"
+              <Edit3 className="w-4 h-4" />
+              <span>Edit Profile</span>
+            </Link>
+
+            <button
               onClick={handleLogout}
-              className="text-rose-600 hover:text-rose-700 hover:border-rose-200 hover:bg-rose-50"
+              className="px-5 py-3 rounded-full border border-stone-300/80 hover:bg-stone-100/80 text-stone-700 text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-stone-400"
+              title="Log out"
             >
-              Log Out
-            </Button>
+              <LogOut className="w-4 h-4 text-stone-500" />
+              <span className="hidden sm:inline">Log Out</span>
+            </button>
           </div>
         </div>
 
-        {/* Welcome Banner */}
-        <div className="p-6 rounded-xl bg-gradient-to-r from-indigo-50 via-blue-50 to-slate-50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Welcome back, <span className="text-indigo-600">{currentUser?.name}</span>!
+        {/* Welcome Callout Banner */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-white/75 backdrop-blur-md border border-stone-200/80 shadow-[0_10px_30px_rgba(28,29,27,0.03)] flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1C1D1B]">
+              Welcome back, <span className="text-[#C87841]">{currentUser?.name}</span>!
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="text-base md:text-lg text-[#525850] font-normal leading-relaxed">
               Your developer skill profile is active. Browse open capstone projects, manage team invitations, and track assigned tasks.
             </p>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
-            <Button to="/projects" variant="primary" size="sm" icon={ArrowRight} iconPosition="right">
-              Explore Projects
-            </Button>
+            <Link
+              to="/projects"
+              className="px-6 py-3 rounded-full bg-[#1E281F] hover:bg-[#2B3A2C] text-white text-sm font-bold shadow-sm hover:shadow-md transition-all flex items-center gap-2 hover:-translate-y-0.5"
+            >
+              <span>Explore Projects</span>
+              <ArrowRight className="w-4 h-4 text-[#C87841]" />
+            </Link>
           </div>
         </div>
 
-        {/* Live Metrics Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {/* Skills Count */}
-          <div className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-indigo-700 font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Skills Listed</span>
+        {/* Elevated Stat Metric Cards (Bento Style) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1: Skills Listed */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(45,69,46,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Skills Listed</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#EAF2E8] text-[#345236] flex items-center justify-center ring-1 ring-[#D5E3D2]">
+                <Sparkles className="w-5 h-5" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-indigo-900">{skillsCount}</div>
+            <div className="text-3xl md:text-4xl font-black text-[#1C1D1B] tracking-tight">{skillsCount}</div>
           </div>
 
-          {/* Pending Invitations */}
-          <div className="p-4 rounded-xl bg-amber-50/50 border border-amber-100 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-amber-700 font-semibold">
-              <MailQuestion className="w-3.5 h-3.5" />
-              <span>Pending Invites</span>
+          {/* Card 2: Pending Invitations */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(200,120,65,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Pending Invites</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center ring-1 ring-[#F3D7C5]">
+                <MailQuestion className="w-5 h-5" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-amber-900">
+            <div className="text-3xl md:text-4xl font-black text-[#C87841] tracking-tight">
               {pendingInvitations.length}
             </div>
           </div>
 
-          {/* Joined Teams */}
-          <div className="p-4 rounded-xl bg-purple-50/50 border border-purple-100 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-purple-700 font-semibold">
-              <FolderGit2 className="w-3.5 h-3.5" />
-              <span>Joined Projects</span>
+          {/* Card 3: Joined Projects */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(143,94,22,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Joined Projects</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#F9F1E2] text-[#8F5E16] flex items-center justify-center ring-1 ring-[#EEDCC1]">
+                <FolderGit2 className="w-5 h-5" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-purple-900">{joinedProjects.length}</div>
+            <div className="text-3xl md:text-4xl font-black text-[#1C1D1B] tracking-tight">{joinedProjects.length}</div>
           </div>
 
-          {/* Assigned Tasks */}
-          <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-semibold">
-              <ListTodo className="w-3.5 h-3.5" />
-              <span>Assigned Tasks</span>
+          {/* Card 4: Assigned Tasks */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(29,74,39,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Assigned Tasks</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#E2EDE5] text-[#1D4A27] flex items-center justify-center ring-1 ring-[#CADCCF]">
+                <ListTodo className="w-5 h-5" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-emerald-900">
+            <div className="text-2xl md:text-3xl font-black text-[#1D4A27] tracking-tight truncate">
               {completedTasksCount} / {myTasks.length} Done
             </div>
           </div>
@@ -333,43 +333,43 @@ export default function StudentDashboard() {
 
         {/* Pending Team Invitations Section */}
         {pendingInvitations.length > 0 && (
-          <div className="p-5 rounded-xl border border-amber-200 bg-amber-50/30 space-y-3">
+          <div className="p-6 sm:p-7 rounded-3xl bg-white/90 backdrop-blur-md border border-stone-200/80 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
-                <MailQuestion className="w-4 h-4 text-amber-600" />
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[#C87841] flex items-center gap-2">
+                <MailQuestion className="w-4 h-4 text-[#C87841]" />
                 Pending Team Invitations ({pendingInvitations.length})
               </h3>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {pendingInvitations.map((inv) => (
                 <div
                   key={inv._id}
-                  className="p-4 rounded-xl bg-white border border-amber-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  className="p-5 rounded-2xl bg-[#FAF8F4]/80 border border-stone-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
-                    <div className="font-bold text-slate-900 text-sm">
+                    <div className="font-bold text-[#1C1D1B] text-base">
                       {inv.project?.title || 'Capstone Project'}
                     </div>
-                    <div className="text-xs text-slate-500">
-                      Invited by <strong>{inv.sender?.name}</strong> ({inv.sender?.department}) •{' '}
+                    <div className="text-xs sm:text-sm text-[#60685D]">
+                      Invited by <strong className="text-[#1C1D1B]">{inv.sender?.name}</strong> ({inv.sender?.department}) •{' '}
                       {formatDate(inv.createdAt)}
                     </div>
                     {inv.message && (
-                      <div className="text-xs text-slate-600 italic">"{inv.message}"</div>
+                      <div className="text-xs sm:text-sm text-[#525850] italic pt-0.5">"{inv.message}"</div>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                  <div className="flex items-center gap-2.5 self-start sm:self-auto shrink-0">
                     <button
                       onClick={() => handleAcceptInvite(inv._id)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+                      className="px-5 py-2 rounded-full text-xs font-bold bg-[#1E281F] text-white hover:bg-[#2B3A2C] transition-all shadow-xs cursor-pointer"
                     >
                       Accept
                     </button>
                     <button
                       onClick={() => handleRejectInvite(inv._id)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                      className="px-5 py-2 rounded-full text-xs font-bold bg-stone-200/70 text-stone-700 hover:bg-stone-300/70 transition-all cursor-pointer"
                     >
                       Decline
                     </button>
@@ -380,221 +380,231 @@ export default function StudentDashboard() {
           </div>
         )}
 
-        {/* Navigation Tabs for Workspace sections */}
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-2 overflow-x-auto scrollbar-none">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'overview'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Profile & Skills
-          </button>
+        {/* Navigation Tabs Container */}
+        <div className="space-y-6">
+          <div className="bg-stone-200/60 backdrop-blur-md p-1.5 rounded-2xl inline-flex gap-2 flex-wrap sm:flex-nowrap">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'overview'
+                  ? 'bg-[#1E281F] text-white shadow-sm'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-white/40'
+              }`}
+            >
+              Profile & Skills
+            </button>
 
-          <button
-            onClick={() => setActiveTab('projects')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'projects'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            My Projects ({joinedProjects.length})
-          </button>
+            <button
+              onClick={() => setActiveTab('projects')}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'projects'
+                  ? 'bg-[#1E281F] text-white shadow-sm'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-white/40'
+              }`}
+            >
+              My Projects ({joinedProjects.length})
+            </button>
 
-          <button
-            onClick={() => setActiveTab('tasks')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'tasks'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Assigned Tasks ({myTasks.length})
-          </button>
-        </div>
+            <button
+              onClick={() => setActiveTab('tasks')}
+              className={`px-6 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'tasks'
+                  ? 'bg-[#1E281F] text-white shadow-sm'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-white/40'
+              }`}
+            >
+              Assigned Tasks ({myTasks.length})
+            </button>
+          </div>
 
-        {/* Tab 1: Profile & Skills Overview */}
-        {activeTab === 'overview' && (
-          <div className="space-y-5 animate-fadeIn">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/60 space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-500 font-medium">
-                  <Building className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Academic Department</span>
+          {/* Tab 1: Profile & Skills Overview Bento */}
+          {activeTab === 'overview' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* Field 1: Department */}
+                <div className="p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-stone-200/70 shadow-sm space-y-2">
+                  <div className="flex items-center gap-2 text-[#4A5A48] font-semibold text-sm">
+                    <Building className="w-4 h-4 text-[#4A5A48]" />
+                    <span className="text-base font-bold text-[#2A3128]">Academic Department</span>
+                  </div>
+                  <div className="font-medium text-[#1C1D1B] text-base md:text-lg pt-1">
+                    {currentUser?.department || 'Computer Science & Engineering'}
+                  </div>
                 </div>
-                <div className="font-bold text-slate-800 text-sm">
-                  {currentUser?.department || 'Not specified'}
+
+                {/* Field 2: Availability */}
+                <div className="p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-stone-200/70 shadow-sm space-y-2">
+                  <div className="flex items-center gap-2 text-[#4A5A48] font-semibold text-sm">
+                    <Clock className="w-4 h-4 text-[#4A5A48]" />
+                    <span className="text-base font-bold text-[#2A3128]">Availability Status</span>
+                  </div>
+                  <div className="pt-1">
+                    <span
+                      className={`inline-block px-4 py-1.5 rounded-full text-sm font-bold border ${
+                        availability === 'Available'
+                          ? 'bg-[#EAF2E8] text-[#28522A] border-[#28522A]/20'
+                          : availability === 'Partially Available'
+                          ? 'bg-[#F9F1E2] text-[#8F5E16] border-[#8F5E16]/20'
+                          : 'bg-rose-50 text-rose-800 border-rose-200'
+                      }`}
+                    >
+                      {availability}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Field 3: Preferred Roles */}
+                <div className="p-6 rounded-3xl bg-white/90 backdrop-blur-md border border-stone-200/70 shadow-sm space-y-2">
+                  <div className="flex items-center gap-2 text-[#4A5A48] font-semibold text-sm">
+                    <Briefcase className="w-4 h-4 text-[#4A5A48]" />
+                    <span className="text-base font-bold text-[#2A3128]">Preferred Roles</span>
+                  </div>
+                  <div className="font-medium text-[#1C1D1B] text-base md:text-lg pt-1 truncate">
+                    {preferredRoles.length > 0 ? preferredRoles.join(', ') : 'Full Stack Developer, ML Engineer'}
+                  </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/60 space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-500 font-medium">
-                  <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Availability Status</span>
+              {/* Technical Skills Bento Card */}
+              {skillsCount > 0 ? (
+                <div className="p-6 sm:p-8 rounded-3xl bg-white/90 backdrop-blur-md border border-stone-200/70 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-base sm:text-lg font-bold text-[#1C1D1B] flex items-center gap-2">
+                      <Code2 className="w-5 h-5 text-[#4A5A48]" />
+                      Technical Skills ({skillsCount})
+                    </span>
+                    <Link to="/student/profile" className="text-sm font-bold text-[#C87841] hover:text-[#B46733] transition-colors">
+                      Manage Skills &rarr;
+                    </Link>
+                  </div>
+                  <div className="flex flex-wrap gap-2.5 pt-2">
+                    {currentUser.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-[#F4EFEB] hover:bg-[#EAE4DC] border border-stone-300 text-[#1C1D1B] font-semibold text-sm px-4 py-2 rounded-xl transition-all shadow-xs"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <span
-                    className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold border ${getAvailabilityClass(
-                      availability
-                    )}`}
+              ) : (
+                <div className="p-10 rounded-3xl border border-dashed border-stone-300 text-center space-y-3 bg-white/50">
+                  <Sparkles className="w-9 h-9 text-stone-400 mx-auto" />
+                  <p className="text-sm font-bold text-stone-700">No skills added yet</p>
+                  <p className="text-xs text-stone-500">Add your programming languages, frameworks, and tools to get matched with projects.</p>
+                  <Link
+                    to="/student/profile"
+                    className="inline-block px-6 py-2.5 rounded-full bg-[#1E281F] text-white text-xs font-bold hover:bg-[#2B3A2C] transition-all shadow-sm"
                   >
-                    {availability}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/60 space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-500 font-medium">
-                  <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Preferred Roles</span>
-                </div>
-                <div className="font-bold text-slate-800 text-sm truncate">
-                  {preferredRoles.length > 0 ? preferredRoles.join(', ') : 'None selected'}
-                </div>
-              </div>
-            </div>
-
-            {skillsCount > 0 ? (
-              <div className="p-4 rounded-xl bg-indigo-50/40 border border-indigo-100/80 space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold text-indigo-900">
-                  <span className="flex items-center gap-1.5">
-                    <Code2 className="w-4 h-4 text-indigo-600" />
-                    Your Technical Skills ({skillsCount})
-                  </span>
-                  <Link to="/student/profile" className="text-indigo-600 hover:underline">
-                    Manage
+                    Add Your Skills
                   </Link>
                 </div>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {currentUser.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-md text-xs font-medium bg-white text-indigo-700 border border-indigo-200 shadow-xs"
+              )}
+            </div>
+          )}
+
+          {/* Tab 2: My Joined Projects */}
+          {activeTab === 'projects' && (
+            <div className="space-y-4 animate-fadeIn">
+              {joinedProjects.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {joinedProjects.map((proj) => (
+                    <Link
+                      key={proj._id}
+                      to={`/projects/${proj._id}`}
+                      className="p-6 rounded-3xl border border-stone-200/80 bg-white/90 hover:border-stone-400 hover:shadow-lg transition-all block group space-y-4"
                     >
-                      {skill}
-                    </span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-[#2D452E] bg-[#EAF2E8] px-3 py-1 rounded-full border border-[#D1E3CE]">
+                          {proj.category}
+                        </span>
+                        <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                          {proj.status}
+                        </span>
+                      </div>
+
+                      <div>
+                        <h4 className="font-bold text-[#1C1D1B] text-lg group-hover:text-[#C87841] transition-colors line-clamp-1">
+                          {proj.title}
+                        </h4>
+                        <p className="text-sm text-[#60685D] mt-1.5 line-clamp-2 leading-relaxed">
+                          {proj.description}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs sm:text-sm text-[#60685D]">
+                        <span>Leader: <strong className="text-[#1C1D1B]">{proj.leader?.name}</strong></span>
+                        <span className="text-[#C87841] font-bold group-hover:underline flex items-center gap-1">
+                          Open Workspace &rarr;
+                        </span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
-              </div>
-            ) : (
-              <div className="p-6 rounded-xl border border-dashed border-slate-200 text-center space-y-2">
-                <Sparkles className="w-8 h-8 text-slate-300 mx-auto" />
-                <p className="text-xs font-semibold text-slate-600">No skills added yet</p>
-                <Button to="/student/profile" variant="primary" size="sm">
-                  Add Your Skills
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Tab 2: My Joined Projects */}
-        {activeTab === 'projects' && (
-          <div className="space-y-4 animate-fadeIn">
-            {joinedProjects.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {joinedProjects.map((proj) => (
-                  <Link
-                    key={proj._id}
-                    to={`/projects/${proj._id}`}
-                    className="p-5 rounded-xl border border-slate-200/90 bg-white hover:border-indigo-300 hover:shadow-xs transition-all block group"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
-                        {proj.category}
-                      </span>
-                      <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        {proj.status}
-                      </span>
-                    </div>
-
-                    <h4 className="font-bold text-slate-900 text-base group-hover:text-indigo-600 transition-colors">
-                      {proj.title}
-                    </h4>
-                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-                      {proj.description}
-                    </p>
-
-                    <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                      <span>Leader: {proj.leader?.name}</span>
-                      <span className="text-indigo-600 font-semibold group-hover:underline">
-                        Open Workspace &rarr;
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="p-8 rounded-xl border border-dashed border-slate-200 text-center space-y-2">
-                <FolderGit2 className="w-8 h-8 text-slate-300 mx-auto" />
-                <p className="text-xs font-semibold text-slate-600">You haven't joined any projects yet</p>
-                <p className="text-xs text-slate-400">
-                  Browse open projects and check your skill match compatibility.
-                </p>
-                <div className="pt-2">
-                  <Button to="/projects" variant="primary" size="sm">
-                    Explore Projects
-                  </Button>
+              ) : (
+                <div className="p-10 rounded-3xl border border-dashed border-stone-300 text-center space-y-3 bg-white/50">
+                  <FolderGit2 className="w-10 h-10 text-stone-400 mx-auto" />
+                  <p className="text-sm font-bold text-stone-700">You haven't joined any projects yet</p>
+                  <p className="text-xs text-stone-500">
+                    Browse open projects and check your skill match compatibility.
+                  </p>
+                  <div className="pt-2">
+                    <Link
+                      to="/projects"
+                      className="inline-block px-6 py-2.5 rounded-full bg-[#1E281F] text-white text-xs font-bold hover:bg-[#2B3A2C] transition-all shadow-sm"
+                    >
+                      Explore Projects
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
-        {/* Tab 3: Assigned Tasks */}
-        {activeTab === 'tasks' && (
-          <div className="space-y-4 animate-fadeIn">
-            {myTasks.length > 0 ? (
-              <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white overflow-hidden">
-                {myTasks.map((t) => (
-                  <div
-                    key={t._id}
-                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-slate-50/60 transition-colors"
-                  >
-                    <div className="space-y-1">
+          {/* Tab 3: Assigned Tasks */}
+          {activeTab === 'tasks' && (
+            <div className="space-y-4 animate-fadeIn">
+              {myTasks.length > 0 ? (
+                <div className="space-y-3">
+                  {myTasks.map((t) => (
+                    <div
+                      key={t._id}
+                      className="p-5 rounded-2xl border border-stone-200/80 bg-white/90 hover:border-stone-400 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs"
+                    >
+                      <div>
+                        <div className="font-bold text-[#1C1D1B] text-base">{t.title}</div>
+                        <div className="text-xs sm:text-sm text-[#60685D] mt-1">
+                          Project: <strong className="text-[#1C1D1B]">{t.project?.title || 'Team Task'}</strong> • Deadline: {formatDate(t.deadline)}
+                        </div>
+                      </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 text-sm">{t.title}</span>
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            t.status === 'Completed'
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : t.status === 'In Progress'
-                              ? 'bg-blue-50 text-blue-700'
-                              : 'bg-slate-100 text-slate-700'
-                          }`}
-                        >
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                          t.status === 'Completed'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : t.status === 'In Progress'
+                            ? 'bg-[#F9F1E2] text-[#8F5E16] border-[#8F5E16]/20'
+                            : 'bg-stone-100 text-stone-700 border-stone-200'
+                        }`}>
                           {t.status}
                         </span>
                       </div>
-                      <div className="text-slate-500">
-                        Project: <strong>{t.project?.title || 'Capstone Project'}</strong> • Priority:{' '}
-                        {t.priority} {t.dueDate && `• Due: ${formatDate(t.dueDate)}`}
-                      </div>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-10 rounded-3xl border border-dashed border-stone-300 text-center space-y-2 bg-white/50">
+                  <ListTodo className="w-10 h-10 text-stone-400 mx-auto" />
+                  <p className="text-sm font-bold text-stone-700">No assigned tasks right now</p>
+                  <p className="text-xs text-stone-500">
+                    When team leaders assign you milestones or sprint tasks, they will appear here.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
-                    <Link
-                      to={`/projects/${t.project?._id || t.project}`}
-                      className="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 font-semibold hover:bg-indigo-100 transition-colors self-start sm:self-auto shrink-0"
-                    >
-                      View in Project
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-8 rounded-xl border border-dashed border-slate-200 text-center space-y-2">
-                <ListTodo className="w-8 h-8 text-slate-300 mx-auto" />
-                <p className="text-xs font-semibold text-slate-600">No tasks currently assigned</p>
-                <p className="text-xs text-slate-400">
-                  When project leaders assign tasks to you, they will appear here.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

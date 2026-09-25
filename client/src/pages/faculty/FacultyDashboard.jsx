@@ -85,101 +85,133 @@ export default function FacultyDashboard() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-800/20">
-              <GraduationCap className="w-6 h-6 text-indigo-400" />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+      {/* Main Workspace Card (Bento Glass Container) */}
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/80 shadow-[0_15px_35px_rgba(30,40,31,0.05)] space-y-8">
+        {/* Top Workspace Header Banner */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-stone-200/70">
+          <div className="flex items-center gap-4">
+            <div className="w-13 h-13 rounded-2xl bg-[#1E281F] flex items-center justify-center shadow-lg shadow-[#1E281F]/20">
+              <svg className="w-6 h-6 text-[#FAF8F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12h3.5l2.5-6 4 12 2.5-6H20" />
+                <circle cx="12" cy="12" r="1.8" fill="#C87841" stroke="#C87841" />
+              </svg>
             </div>
             <div>
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Faculty Guide Workspace
+              <span className="text-sm font-bold tracking-widest text-[#4A5A48] uppercase block">
+                FACULTY WORKSPACE
               </span>
-              <h1 className="text-2xl font-bold text-slate-900">ProjectPulse</h1>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-[#1C1D1B] tracking-tight">ProjectPulse</h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <Button
+          <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+            <Link
               to="/projects"
-              variant="outline"
-              size="md"
-              className="bg-white border-slate-200"
+              className="px-6 py-3 rounded-full bg-[#1E281F] hover:bg-[#2B3A2C] text-white text-sm font-bold shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2"
             >
-              Explore Directory
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              icon={LogOut}
-              iconPosition="left"
+              <span>Explore Directory</span>
+              <ArrowRight className="w-4 h-4 text-[#C87841]" />
+            </Link>
+            <button
               onClick={handleLogout}
-              className="text-rose-600 hover:text-rose-700 hover:border-rose-200 hover:bg-rose-50"
+              className="px-5 py-3 rounded-full border border-stone-300/80 hover:bg-stone-100/80 text-stone-700 text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer hover:border-stone-400"
+              title="Log out"
             >
-              Log Out
-            </Button>
+              <LogOut className="w-4 h-4 text-stone-500" />
+              <span className="hidden sm:inline">Log Out</span>
+            </button>
           </div>
         </div>
 
         {/* Welcome Banner */}
-        <div className="p-6 rounded-xl bg-gradient-to-r from-slate-100 via-indigo-50 to-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Welcome, Prof. <span className="text-indigo-600">{user?.name}</span>!
+        <div className="p-6 sm:p-8 rounded-3xl bg-white/75 backdrop-blur-md border border-stone-200/80 shadow-[0_10px_30px_rgba(28,29,27,0.03)] flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1C1D1B]">
+              Welcome, Prof. <span className="text-[#C87841]">{user?.name}</span>!
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="text-base md:text-lg text-[#525850] font-normal leading-relaxed">
               Department of {user?.department || 'Computer Science'}. Review student capstone teams, track milestone deliverables, and submit structured feedback.
             </p>
           </div>
+          <Link
+            to="/projects"
+            className="px-6 py-3 rounded-full bg-[#1E281F] hover:bg-[#2B3A2C] text-white text-sm font-bold shadow-md transition-all flex items-center gap-2 hover:-translate-y-0.5 self-start sm:self-auto shrink-0"
+          >
+            <span>All Projects</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#C87841]" />
+          </Link>
         </div>
 
-        {/* Metrics Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-slate-100/70 border border-slate-200 space-y-1">
-            <div className="text-xs text-slate-500 font-semibold">Total Projects</div>
-            <div className="text-2xl font-black text-slate-900">{projects.length}</div>
+        {/* Elevated Metrics Row (Bento Style) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1: Total Projects */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(45,69,46,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Total Projects</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#F2EFE9] text-stone-700 flex items-center justify-center ring-1 ring-stone-300/60">
+                <FolderGit2 className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-3xl md:text-4xl font-black text-[#1C1D1B] tracking-tight">{projects.length}</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-100 space-y-1">
-            <div className="text-xs text-emerald-700 font-semibold">Open Projects</div>
-            <div className="text-2xl font-black text-emerald-900">{openProjectsCount}</div>
+          {/* Card 2: Open Projects */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(45,69,46,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Open Projects</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#EAF2E8] text-[#2D452E] flex items-center justify-center ring-1 ring-[#D5E3D2]">
+                <Activity className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-3xl md:text-4xl font-black text-[#2D452E] tracking-tight">{openProjectsCount}</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-blue-50/60 border border-blue-100 space-y-1">
-            <div className="text-xs text-blue-700 font-semibold">In Progress</div>
-            <div className="text-2xl font-black text-blue-900">{inProgressCount}</div>
+          {/* Card 3: In Progress */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(143,94,22,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">In Progress</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#F7EFE1] text-[#7A5418] flex items-center justify-center ring-1 ring-[#EEDCC1]">
+                <Clock className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-3xl md:text-4xl font-black text-[#7A5418] tracking-tight">{inProgressCount}</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-purple-50/60 border border-purple-100 space-y-1">
-            <div className="text-xs text-purple-700 font-semibold">Completed</div>
-            <div className="text-2xl font-black text-purple-900">{completedCount}</div>
+          {/* Card 4: Completed */}
+          <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-white/90 shadow-[0_10px_25px_rgba(28,29,27,0.03)] hover:-translate-y-1 hover:shadow-[0_20px_35px_rgba(200,120,65,0.09)] transition-all duration-300 space-y-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-[#5A6357]">Completed</span>
+              <div className="w-11 h-11 rounded-2xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center ring-1 ring-[#F3D7C5]">
+                <CheckCircle className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-3xl md:text-4xl font-black text-[#C87841] tracking-tight">{completedCount}</div>
           </div>
         </div>
 
         {/* Search & Filter Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-4 top-3.5" />
             <input
               type="text"
               placeholder="Search projects by title, category, or leader..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-xl text-xs border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full pl-11 pr-5 py-3 rounded-full text-xs sm:text-sm border border-stone-300 bg-white/90 text-[#1C1D1B] placeholder-stone-400 focus:bg-white focus:border-[#C87841] focus:ring-2 focus:ring-[#C87841]/20 focus:outline-none transition-all shadow-xs"
             />
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#1E281F] text-white shadow-xs'
+                    : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200 border border-stone-300/40'
                 }`}
               >
                 {cat}
@@ -189,41 +221,41 @@ export default function FacultyDashboard() {
         </div>
 
         {/* Projects Grid for Faculty Review */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="space-y-6">
+          <h3 className="text-base sm:text-lg font-bold text-[#1C1D1B]">
             Student Projects Directory ({filteredProjects.length})
           </h3>
 
           {loading ? (
-            <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-              <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-              <span>Loading projects directory...</span>
+            <div className="p-12 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+              <Loader2 className="w-8 h-8 animate-spin text-[#1E281F]" />
+              <span className="font-semibold text-xs">Loading projects directory...</span>
             </div>
           ) : filteredProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {filteredProjects.map((proj) => {
                 const teamSize = 1 + (proj.members?.length || 0);
                 return (
                   <div
                     key={proj._id}
-                    className="p-5 rounded-xl border border-slate-200/90 bg-white hover:border-slate-300 shadow-xs space-y-4 flex flex-col justify-between"
+                    className="p-6 rounded-3xl border border-stone-200/80 bg-white/90 hover:border-stone-400 hover:shadow-lg transition-all space-y-4 flex flex-col justify-between"
                   >
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100">
+                        <span className="text-xs font-semibold text-[#2D452E] bg-[#EAF2E8] px-3 py-1 rounded-full border border-[#2D452E]/15">
                           {proj.category}
                         </span>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-stone-700 bg-[#F2EFE9] px-3 py-1 rounded-full border border-stone-200">
                             {teamSize} / {proj.maxTeamSize} Members
                           </span>
                           <span
-                            className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                            className={`text-xs font-bold px-3 py-1 rounded-full ${
                               proj.status === 'Open'
-                                ? 'bg-emerald-50 text-emerald-700'
+                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                                 : proj.status === 'In Progress'
-                                ? 'bg-blue-50 text-blue-700'
-                                : 'bg-slate-100 text-slate-700'
+                                ? 'bg-[#F7EFE1] text-[#7A5418] border border-[#7A5418]/20'
+                                : 'bg-[#FBECE3] text-[#C87841] border border-[#C87841]/20'
                             }`}
                           >
                             {proj.status}
@@ -231,18 +263,18 @@ export default function FacultyDashboard() {
                         </div>
                       </div>
 
-                      <h4 className="font-bold text-slate-900 text-base line-clamp-1">
+                      <h4 className="font-bold text-[#1C1D1B] text-lg line-clamp-1">
                         {proj.title}
                       </h4>
-                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                      <p className="text-sm text-[#525850] line-clamp-2 leading-relaxed">
                         {proj.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-1 pt-1">
+                      <div className="flex flex-wrap gap-2 pt-1">
                         {proj.requiredSkills?.slice(0, 3).map((s, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700"
+                            className="px-3 py-1 rounded-xl text-xs font-semibold bg-[#F4EFEB] text-stone-800 border border-stone-300/60"
                           >
                             {s}
                           </span>
@@ -250,17 +282,17 @@ export default function FacultyDashboard() {
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <div className="text-slate-500 truncate max-w-[50%]">
-                        Leader: <strong>{proj.leader?.name}</strong>
+                    <div className="pt-4 border-t border-stone-200/70 flex items-center justify-between text-xs sm:text-sm">
+                      <div className="text-stone-600 truncate max-w-[50%]">
+                        Leader: <strong className="text-[#1C1D1B]">{proj.leader?.name}</strong>
                       </div>
 
                       <Link
                         to={`/projects/${proj._id}`}
-                        className="px-3 py-1.5 rounded-lg bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+                        className="px-4 py-2 rounded-full bg-[#1E281F] text-white font-bold hover:bg-[#2B3A2C] shadow-xs hover:shadow-md transition-all flex items-center gap-1.5"
                       >
-                        <MessageSquareQuote className="w-3.5 h-3.5" />
-                        Review Workspace &rarr;
+                        <MessageSquareQuote className="w-3.5 h-3.5 text-[#C87841]" />
+                        <span>Review Workspace &rarr;</span>
                       </Link>
                     </div>
                   </div>
@@ -268,10 +300,10 @@ export default function FacultyDashboard() {
               })}
             </div>
           ) : (
-            <div className="p-8 rounded-xl border border-dashed border-slate-200 text-center space-y-2">
-              <FolderGit2 className="w-8 h-8 text-slate-300 mx-auto" />
-              <p className="text-xs font-semibold text-slate-600">No projects found</p>
-              <p className="text-xs text-slate-400">Try adjusting your search criteria.</p>
+            <div className="p-10 rounded-3xl border border-dashed border-stone-300 text-center space-y-2 bg-white/50">
+              <FolderGit2 className="w-10 h-10 text-stone-400 mx-auto" />
+              <p className="text-sm font-bold text-stone-700">No projects found</p>
+              <p className="text-xs text-stone-500">Try adjusting your search criteria.</p>
             </div>
           )}
         </div>

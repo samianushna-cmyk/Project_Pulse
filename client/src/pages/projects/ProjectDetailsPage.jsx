@@ -616,14 +616,14 @@ export default function ProjectDetailsPage() {
       <div className="flex items-center justify-between">
         <Link
           to="/projects"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C87841] hover:text-[#A35222] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Back to Explore Projects
         </Link>
 
         {isLeader && (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#FBECE3] text-[#C87841] border border-[#C87841]/20">
             <Shield className="w-3 h-3" />
             Project Leader Workspace
           </span>
@@ -632,7 +632,7 @@ export default function ProjectDetailsPage() {
 
       {statusMessage.text && (
         <div
-          className={`p-4 rounded-xl text-xs font-semibold border flex items-center justify-between ${
+          className={`p-4 rounded-2xl text-xs font-semibold border flex items-center justify-between shadow-xs animate-fade-in ${
             statusMessage.type === 'error'
               ? 'bg-rose-50 text-rose-800 border-rose-200'
               : 'bg-emerald-50 text-emerald-800 border-emerald-200'
@@ -640,15 +640,15 @@ export default function ProjectDetailsPage() {
         >
           <div className="flex items-center gap-2">
             {statusMessage.type === 'error' ? (
-              <AlertCircle className="w-4 h-4" />
+              <AlertCircle className="w-4 h-4 text-rose-600" />
             ) : (
-              <CheckCircle className="w-4 h-4" />
+              <CheckCircle className="w-4 h-4 text-emerald-600" />
             )}
             <span>{statusMessage.text}</span>
           </div>
           <button
             onClick={() => setStatusMessage({ type: '', text: '' })}
-            className="text-xs font-bold hover:underline"
+            className="text-xs font-bold hover:underline cursor-pointer"
           >
             Dismiss
           </button>
@@ -656,11 +656,11 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Main Project Header Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-card space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b border-slate-100">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/70 shadow-[0_10px_30px_rgba(28,29,27,0.04)] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6 border-b border-stone-100">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#EAF2E8] text-[#2D452E] border border-[#2D452E]/15">
                 <Tag className="w-3 h-3" />
                 {project.category}
               </span>
@@ -671,27 +671,27 @@ export default function ProjectDetailsPage() {
               >
                 {project.status}
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                <Users className="w-3 h-3 text-slate-500" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F2EFE9] text-stone-700 border border-stone-200">
+                <Users className="w-3 h-3 text-stone-500" />
                 Team: {currentTeamCount} / {project.maxTeamSize}
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#1C1D1B] tracking-tight">
               {project.title}
             </h1>
           </div>
 
-          <div className="flex flex-col sm:items-end gap-2 text-xs text-slate-500 shrink-0">
+          <div className="flex flex-col sm:items-end gap-2 text-xs text-stone-500 shrink-0">
             <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-slate-400" />
+              <Calendar className="w-4 h-4 text-stone-400" />
               <span>Created on {formatDate(project.createdAt)}</span>
             </div>
             {isLeader && !isTeamFull && (
               <button
                 onClick={handleOpenInviteModal}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-[#1E281F] text-white hover:bg-[#151D16] transition-all shadow-xs cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 text-[#C87841]" />
                 Invite Student
               </button>
             )}
@@ -699,13 +699,13 @@ export default function ProjectDetailsPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 overflow-x-auto border-b border-slate-100 pb-2 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto border-b border-stone-100 pb-3 scrollbar-none">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'overview'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-[#1E281F] text-white shadow-xs'
+                : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
             }`}
           >
             Overview
@@ -713,10 +713,10 @@ export default function ProjectDetailsPage() {
 
           <button
             onClick={() => setActiveTab('team')}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'team'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-[#1E281F] text-white shadow-xs'
+                : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
             }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -726,10 +726,10 @@ export default function ProjectDetailsPage() {
           {isStudent && (
             <button
               onClick={() => setActiveTab('match')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'match'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-[#1E281F] text-white shadow-xs'
+                  : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
               }`}
             >
               <Target className="w-3.5 h-3.5" />
@@ -740,10 +740,10 @@ export default function ProjectDetailsPage() {
           {(isMember || isFaculty) && (
             <button
               onClick={() => setActiveTab('tasks')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'tasks'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-[#1E281F] text-white shadow-xs'
+                  : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
               }`}
             >
               <ListTodo className="w-3.5 h-3.5" />
@@ -754,10 +754,10 @@ export default function ProjectDetailsPage() {
           {(isMember || isFaculty) && (
             <button
               onClick={() => setActiveTab('proofs')}
-              className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'proofs'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-[#1E281F] text-white shadow-xs'
+                  : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
               }`}
             >
               <FileCheck2 className="w-3.5 h-3.5" />
@@ -767,10 +767,10 @@ export default function ProjectDetailsPage() {
 
           <button
             onClick={() => setActiveTab('contributions')}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'contributions'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-[#1E281F] text-white shadow-xs'
+                : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
             }`}
           >
             <Award className="w-3.5 h-3.5" />
@@ -779,10 +779,10 @@ export default function ProjectDetailsPage() {
 
           <button
             onClick={() => setActiveTab('feedback')}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'feedback'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-[#1E281F] text-white shadow-xs'
+                : 'bg-[#F2EFE9] text-stone-700 hover:bg-stone-200'
             }`}
           >
             <MessageSquareQuote className="w-3.5 h-3.5" />
@@ -857,13 +857,13 @@ export default function ProjectDetailsPage() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100 shrink-0">
+              <div className="p-4 rounded-2xl bg-[#FAF8F4] border border-stone-200 flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FBECE3] text-[#C87841] flex items-center justify-center border border-[#C87841]/20 shrink-0">
                   <User className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-500 font-medium">Project Leader</div>
-                  <div className="font-bold text-slate-800 text-sm">
+                  <div className="text-xs text-stone-500 font-medium">Project Leader</div>
+                  <div className="font-bold text-[#1C1D1B] text-sm">
                     {project.leader?.name} ({project.leader?.department || 'Department'})
                   </div>
                 </div>
@@ -877,51 +877,48 @@ export default function ProjectDetailsPage() {
         {/* ==================================================== */}
         {activeTab === 'team' && (
           <div className="space-y-6 animate-fadeIn">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">Project Team</h2>
-                <p className="text-xs text-slate-500">
+                <h2 className="text-lg font-bold text-[#1C1D1B]">Project Team</h2>
+                <p className="text-xs text-stone-500">
                   Current team size: <strong>{currentTeamCount} / {project.maxTeamSize}</strong>
                 </p>
               </div>
 
               {isLeader && !isTeamFull && (
-                <Button
+                <button
                   onClick={handleOpenInviteModal}
-                  variant="primary"
-                  size="sm"
-                  icon={Plus}
-                  iconPosition="left"
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="px-4 py-2 rounded-full text-xs font-semibold bg-[#1E281F] text-white hover:bg-[#151D16] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
-                  Invite Student
-                </Button>
+                  <Plus className="w-3.5 h-3.5 text-[#C87841]" />
+                  <span>Invite Student</span>
+                </button>
               )}
             </div>
 
             {/* Members List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Leader Card */}
-              <div className="p-5 rounded-xl border border-purple-200 bg-purple-50/30 space-y-3">
+              <div className="p-5 rounded-2xl border border-[#C87841]/25 bg-[#FAF8F4] space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+                    <div className="w-10 h-10 rounded-xl bg-[#1E281F] text-white font-bold flex items-center justify-center text-sm shadow-xs">
                       {project.leader?.name?.charAt(0) || 'L'}
                     </div>
                     <div>
-                      <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                      <div className="font-bold text-[#1C1D1B] text-sm flex items-center gap-1.5">
                         {project.leader?.name}
-                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">
+                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#FBECE3] text-[#C87841] border border-[#C87841]/20">
                           Leader
                         </span>
                       </div>
-                      <div className="text-xs text-slate-500">{project.leader?.email}</div>
+                      <div className="text-xs text-stone-500">{project.leader?.email}</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-xs text-slate-600 flex items-center gap-2 pt-1 border-t border-purple-100">
-                  <Building className="w-3.5 h-3.5 text-purple-500" />
+                <div className="text-xs text-stone-600 flex items-center gap-2 pt-1 border-t border-stone-200">
+                  <Building className="w-3.5 h-3.5 text-[#C87841]" />
                   <span>{project.leader?.department || 'Department not specified'}</span>
                 </div>
               </div>
@@ -931,11 +928,11 @@ export default function ProjectDetailsPage() {
                 project.members.map((member) => (
                   <div
                     key={member._id}
-                    className="p-5 rounded-xl border border-slate-200 bg-white space-y-3 shadow-xs"
+                    className="p-5 rounded-2xl border border-stone-200 bg-[#FDFCF9] space-y-3 shadow-xs"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+                        <div className="w-10 h-10 rounded-xl bg-[#2D452E] text-white font-bold flex items-center justify-center text-sm shadow-xs">
                           {member.name?.charAt(0) || 'M'}
                         </div>
                         <div>
@@ -1201,23 +1198,20 @@ export default function ProjectDetailsPage() {
                 </div>
 
                 {isLeader && (
-                  <Button
+                  <button
                     onClick={() => setShowTaskModal(true)}
-                    variant="primary"
-                    size="sm"
-                    icon={Plus}
-                    iconPosition="left"
-                    className="bg-purple-600 hover:bg-purple-700"
+                    className="px-4 py-2 rounded-full text-xs font-semibold bg-[#1E281F] text-white hover:bg-[#151D16] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
                   >
-                    Add Task
-                  </Button>
+                    <Plus className="w-3.5 h-3.5 text-[#C87841]" />
+                    <span>Add Task</span>
+                  </button>
                 )}
               </div>
             </div>
 
             {loadingTasks ? (
-              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-                <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+                <Loader2 className="w-6 h-6 animate-spin text-[#1E281F]" />
                 <span>Loading project tasks...</span>
               </div>
             ) : filteredTasks.length > 0 ? (
@@ -1501,31 +1495,31 @@ export default function ProjectDetailsPage() {
             </div>
 
             {loadingContributions ? (
-              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-500 text-sm">
-                <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-stone-500 text-sm">
+                <Loader2 className="w-6 h-6 animate-spin text-[#1E281F]" />
                 <span>Computing contribution statistics...</span>
               </div>
             ) : contributions ? (
               <div className="space-y-6">
                 {/* Overall Project Progress Card */}
-                <div className="p-5 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 space-y-3">
+                <div className="p-6 rounded-2xl bg-[#FAF8F4] border border-stone-200/80 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-indigo-700">
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#C87841]">
                         Overall Deliverables Progress
                       </div>
-                      <div className="text-2xl font-black text-slate-900 mt-0.5">
+                      <div className="text-2xl font-black text-[#1C1D1B] mt-0.5">
                         {contributions.overallCompletionPercentage}% Completed
                       </div>
                     </div>
-                    <div className="text-xs text-slate-600 font-medium">
+                    <div className="text-xs text-stone-600 font-medium">
                       {contributions.completedTasks} of {contributions.totalTasks} tasks completed
                     </div>
                   </div>
 
-                  <div className="w-full bg-indigo-200/80 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-stone-200 rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-3 rounded-full bg-indigo-600 transition-all duration-500"
+                      className="h-3 rounded-full bg-[#1E281F] transition-all duration-500"
                       style={{ width: `${Math.max(contributions.overallCompletionPercentage, 3)}%` }}
                     />
                   </div>
@@ -1533,7 +1527,7 @@ export default function ProjectDetailsPage() {
 
                 {/* Per-member Contribution Breakdown */}
                 <div className="space-y-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500">
                     Team Member Task Completion Breakdown
                   </h3>
 
@@ -1541,29 +1535,29 @@ export default function ProjectDetailsPage() {
                     {contributions.contributions?.map((memberStat) => (
                       <div
                         key={memberStat.user?._id}
-                        className="p-4 rounded-xl border border-slate-200 bg-white space-y-3 shadow-xs"
+                        className="p-4 rounded-2xl border border-stone-200 bg-[#FDFCF9] space-y-3 shadow-xs"
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs border border-slate-200">
+                            <div className="w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold flex items-center justify-center text-xs border border-stone-200">
                               {memberStat.user?.name?.charAt(0)}
                             </div>
                             <div>
-                              <div className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                              <div className="font-bold text-[#1C1D1B] text-sm flex items-center gap-1.5">
                                 {memberStat.user?.name}
                                 {memberStat.user?.isLeader && (
-                                  <span className="text-[10px] font-bold px-1.5 py-0.2 bg-purple-50 text-purple-700 rounded border border-purple-200">
+                                  <span className="text-[10px] font-bold px-1.5 py-0.2 bg-[#FBECE3] text-[#C87841] rounded-full border border-[#C87841]/20">
                                     Leader
                                   </span>
                                 )}
                               </div>
-                              <div className="text-[11px] text-slate-500">
+                              <div className="text-[11px] text-stone-500">
                                 {memberStat.user?.department}
                               </div>
                             </div>
                           </div>
 
-                          <span className="text-lg font-extrabold text-indigo-600">
+                          <span className="text-lg font-extrabold text-[#1E281F]">
                             {memberStat.completionPercentage}%
                           </span>
                         </div>
@@ -1746,29 +1740,29 @@ export default function ProjectDetailsPage() {
                   placeholder="e.g. Implement authentication JWT middleware"
                   value={newTask.title}
                   onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Description & Deliverables</label>
+                <label className="block font-bold text-stone-700 mb-1">Description & Deliverables</label>
                 <textarea
                   rows={3}
                   placeholder="Describe expected deliverable requirements..."
                   value={newTask.description}
                   onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Assign To *</label>
+                  <label className="block font-bold text-stone-700 mb-1">Assign To *</label>
                   <select
                     required
                     value={newTask.assignedTo}
                     onChange={(e) => setNewTask({ ...newTask, assignedTo: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                   >
                     <option value="">Select Member</option>
                     {allTeamMembers.map((m) => (
@@ -1780,11 +1774,11 @@ export default function ProjectDetailsPage() {
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Priority</label>
+                  <label className="block font-bold text-stone-700 mb-1">Priority</label>
                   <select
                     value={newTask.priority}
                     onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -1794,32 +1788,30 @@ export default function ProjectDetailsPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Due Date</label>
+                <label className="block font-bold text-stone-700 mb-1">Due Date</label>
                 <input
                   type="date"
                   value={newTask.dueDate}
                   onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setShowTaskModal(false)}
-                  className="px-4 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100"
+                  className="px-5 py-2 rounded-full font-semibold text-stone-700 hover:bg-stone-100 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <Button
+                <button
                   type="submit"
-                  variant="primary"
-                  size="sm"
                   disabled={submittingTask}
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="px-6 py-2 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-50"
                 >
                   {submittingTask ? 'Creating...' : 'Create Task'}
-                </Button>
+                </button>
               </div>
             </form>
           </div>
@@ -2064,7 +2056,7 @@ export default function ProjectDetailsPage() {
                     required
                     value={selectedStudentId}
                     onChange={(e) => setSelectedStudentId(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                   >
                     <option value="">Select eligible candidate</option>
                     {studentsList.map((st) => (
@@ -2077,33 +2069,31 @@ export default function ProjectDetailsPage() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Personal Message</label>
+                <label className="block font-bold text-stone-700 mb-1">Personal Message</label>
                 <textarea
                   rows={2}
                   placeholder="Hey, we'd love for you to join our capstone squad for frontend development..."
                   value={inviteMessage}
                   onChange={(e) => setInviteMessage(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] border border-stone-300 text-sm text-[#1C1D1B] focus:outline-none focus:ring-2 focus:ring-[#C87841]/20 focus:border-[#C87841]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-stone-100">
                 <button
                   type="button"
                   onClick={() => setShowInviteModal(false)}
-                  className="px-4 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100"
+                  className="px-5 py-2 rounded-full font-semibold text-stone-700 hover:bg-stone-100 cursor-pointer"
                 >
                   Cancel
                 </button>
-                <Button
+                <button
                   type="submit"
-                  variant="primary"
-                  size="sm"
                   disabled={submittingInvite || !selectedStudentId}
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="px-6 py-2 rounded-full bg-[#1E281F] hover:bg-[#151D16] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-50"
                 >
                   {submittingInvite ? 'Sending...' : 'Send Invitation'}
-                </Button>
+                </button>
               </div>
             </form>
           </div>

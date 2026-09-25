@@ -2,19 +2,12 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  Activity,
   Menu,
   X,
-  ArrowRight,
-  Sparkles,
   LogOut,
   User,
-  FolderGit2,
-  FolderPlus,
-  LayoutDashboard,
-  Shield
+  Compass
 } from 'lucide-react';
-import Button from './Button';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -22,16 +15,8 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
 
-  const isLandingPage = location.pathname === '/';
-
-  const scrollToSection = (id) => {
-    setMobileMenuOpen(false);
-    if (!isLandingPage) return;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const isLoginPage = location.pathname === '/login';
+  const isSignupPage = location.pathname === '/signup' || location.pathname === '/register';
 
   const handleLogout = () => {
     setMobileMenuOpen(false);
@@ -39,13 +24,26 @@ export default function Navbar() {
     navigate('/login');
   };
 
-  // Helper to determine link active state
   const isActive = (path) => location.pathname === path;
 
+  const getRoleBadgeStyle = (role) => {
+    switch (role?.toLowerCase()) {
+      case 'student':
+        return 'bg-[#EAF2E8] text-[#2D452E] border border-[#D1E3CE]';
+      case 'leader':
+        return 'bg-[#FBECE3] text-[#A35222] border border-[#F4D4C3]';
+      case 'faculty':
+        return 'bg-[#F7EFE1] text-[#7A5418] border border-[#EBDCC5]';
+      default:
+        return 'bg-[#EAF2E8] text-[#2D452E] border border-[#D1E3CE]';
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full glass-panel border-b border-slate-200/80 transition-all duration-200">
+    <header className="sticky top-0 z-50 w-full bg-[#FAF8F4]/85 backdrop-blur-md border-b border-stone-200/80 shadow-[0_2px_16px_-4px_rgba(27,28,26,0.04)] transition-all duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-20">
+          
           {/* Brand Logo */}
           <Link
             to={
@@ -57,193 +55,169 @@ export default function Navbar() {
                   : '/student/dashboard'
                 : '/'
             }
-            className="flex items-center gap-2.5 group"
+            className="flex items-center gap-3.5 group focus:outline-none"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200">
-              <Activity className="w-5 h-5 text-indigo-100" />
+            <div className="w-10 h-10 rounded-xl bg-[#1E281F] flex items-center justify-center shadow-md shadow-[#1E281F]/15 group-hover:scale-105 transition-transform duration-200">
+              <svg className="w-5 h-5 text-[#FAF8F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12h3.5l2.5-6 4 12 2.5-6H20" />
+                <circle cx="12" cy="12" r="1.5" fill="#C87841" stroke="#C87841" />
+              </svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                Project<span className="text-indigo-600">Pulse</span>
+              <span className="text-lg font-bold tracking-tight text-[#1C1D1B] leading-none group-hover:text-[#1E281F] transition-colors">
+                Project<span className="text-[#C87841]">Pulse</span>
               </span>
-              <span className="text-[10px] font-medium tracking-wider text-slate-500 uppercase -mt-1 hidden sm:block">
-                Skill-Based Collaboration
+              <span className="text-[9.5px] font-mono tracking-widest text-[#72756E] uppercase font-semibold mt-1 hidden sm:block">
+                SKILL-BASED COLLABORATION
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-slate-600">
+          <nav className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-stone-200/70 shadow-sm backdrop-blur-md text-sm font-medium">
             {isAuthenticated ? (
               /* Authenticated Role-based Nav */
               <>
-                {/* Leader Links */}
                 {user?.role === 'leader' && (
                   <>
                     <Link
                       to="/leader/dashboard"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/leader/dashboard')
-                          ? 'text-purple-600 font-semibold border-b-2 border-purple-600'
-                          : 'hover:text-purple-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/leader/projects/create"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/leader/projects/create')
-                          ? 'text-purple-600 font-semibold border-b-2 border-purple-600'
-                          : 'hover:text-purple-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Create Project
                     </Link>
                     <Link
                       to="/projects"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/projects')
-                          ? 'text-purple-600 font-semibold border-b-2 border-purple-600'
-                          : 'hover:text-purple-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
-                      Projects
+                      Explore Projects
                     </Link>
                   </>
                 )}
 
-                {/* Student Links */}
                 {user?.role === 'student' && (
                   <>
                     <Link
                       to="/student/dashboard"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/student/dashboard')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/student/profile"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/student/profile')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Profile
                     </Link>
                     <Link
                       to="/projects"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/projects')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Explore Projects
                     </Link>
                     <Link
                       to="/student/projects"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/student/projects')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       My Projects
                     </Link>
                     <Link
                       to="/student/invitations"
-                      className={`transition-colors py-1 flex items-center gap-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/student/invitations')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
-                      <span>Invitations</span>
+                      Invitations
                     </Link>
                     <Link
                       to="/student/tasks"
-                      className={`transition-colors py-1 flex items-center gap-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/student/tasks')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
-                      <span>Tasks</span>
+                      Tasks
                     </Link>
                   </>
                 )}
 
-                {/* Faculty Links */}
                 {user?.role === 'faculty' && (
                   <>
                     <Link
                       to="/faculty/dashboard"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/faculty/dashboard')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/projects"
-                      className={`transition-colors py-1 ${
+                      className={`px-3.5 py-1.5 rounded-full transition-all ${
                         isActive('/projects')
-                          ? 'text-indigo-600 font-semibold border-b-2 border-indigo-600'
-                          : 'hover:text-indigo-600'
+                          ? 'bg-[#1E281F] text-white font-semibold shadow-xs'
+                          : 'text-[#525850] hover:text-stone-900 hover:bg-stone-100/70'
                       }`}
                     >
-                      Projects
+                      Explore Directory
                     </Link>
                   </>
                 )}
               </>
-            ) : isLandingPage ? (
-              /* Guest Navigation on Landing Page */
-              <>
-                <button
-                  onClick={() => scrollToSection('problem')}
-                  className="hover:text-indigo-600 transition-colors py-1 cursor-pointer"
-                >
-                  Challenges
-                </button>
-                <button
-                  onClick={() => scrollToSection('features')}
-                  className="hover:text-indigo-600 transition-colors py-1 cursor-pointer"
-                >
-                  Features
-                </button>
-                <button
-                  onClick={() => scrollToSection('how-it-works')}
-                  className="hover:text-indigo-600 transition-colors py-1 cursor-pointer"
-                >
-                  How It Works
-                </button>
-                <button
-                  onClick={() => scrollToSection('roles')}
-                  className="hover:text-indigo-600 transition-colors py-1 cursor-pointer"
-                >
-                  Roles
-                </button>
-              </>
             ) : (
-              /* Guest Navigation on Auth Pages */
+              /* Public / Guest Navigation */
               <>
-                <Link to="/#features" className="hover:text-indigo-600 transition-colors">
+                <Link to="/#features" className="px-4 py-2 rounded-full hover:bg-stone-100/70 hover:text-stone-900 transition-colors text-[#525850]">
                   Features
                 </Link>
-                <Link to="/#how-it-works" className="hover:text-indigo-600 transition-colors">
+                <Link to="/#how-it-works" className="px-4 py-2 rounded-full hover:bg-stone-100/70 hover:text-stone-900 transition-colors text-[#525850]">
                   How It Works
                 </Link>
-                <Link to="/#roles" className="hover:text-indigo-600 transition-colors">
+                <Link to="/#roles" className="px-4 py-2 rounded-full hover:bg-stone-100/70 hover:text-stone-900 transition-colors text-[#525850]">
                   Roles
+                </Link>
+                <Link to="/projects" className="px-4 py-2 rounded-full hover:bg-stone-100/70 hover:text-stone-900 transition-colors text-[#525850] flex items-center gap-1.5">
+                  <Compass className="w-3.5 h-3.5 text-[#C87841]" />
+                  <span>Explore Projects</span>
                 </Link>
               </>
             )}
@@ -253,38 +227,49 @@ export default function Navbar() {
           <div className="hidden sm:flex items-center gap-3">
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/80 border border-slate-200/80 text-xs">
-                  <User className="w-3.5 h-3.5 text-slate-500" />
-                  <span className="font-semibold text-slate-800">{user?.name}</span>
-                  <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-indigo-700 border border-slate-200 capitalize">
+                {/* User Chip with Role Badge */}
+                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200/80 text-xs shadow-sm">
+                  <User className="w-3.5 h-3.5 text-stone-500" />
+                  <span className="font-semibold text-[#1C1D1B]">{user?.name}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase font-mono ${getRoleBadgeStyle(user?.role)}`}>
                     {user?.role}
                   </span>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  icon={LogOut}
-                  iconPosition="left"
+                
+                {/* Clean Stone Logout Icon */}
+                <button
                   onClick={handleLogout}
-                  className="text-rose-600 hover:text-rose-700 hover:border-rose-200 hover:bg-rose-50"
+                  className="p-2 rounded-full text-stone-500 hover:text-stone-900 hover:bg-stone-100/80 border border-transparent hover:border-stone-200 transition-colors cursor-pointer"
+                  title="Log out"
                 >
-                  Log out
-                </Button>
+                  <LogOut className="w-4 h-4" />
+                </button>
               </div>
             ) : (
               <>
-                <Button to="/login" variant="ghost" size="md">
-                  Log in
-                </Button>
-                <Button
-                  to="/signup"
-                  variant="primary"
-                  size="md"
-                  icon={ArrowRight}
-                  iconPosition="right"
-                >
-                  Get Started
-                </Button>
+                {!isLoginPage && (
+                  <Link
+                    to="/login"
+                    className="px-4 py-2 text-sm font-semibold text-[#454743] hover:text-stone-900 rounded-full hover:bg-stone-100/70 transition-all duration-200"
+                  >
+                    Log in
+                  </Link>
+                )}
+                {!isSignupPage ? (
+                  <Link
+                    to="/register"
+                    className="px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-[#1E281F] hover:bg-[#151D16] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-1.5 group"
+                  >
+                    <span>Get Started →</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-[#1E281F] hover:bg-[#151D16] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-1.5 group"
+                  >
+                    <span>Log in →</span>
+                  </Link>
+                )}
               </>
             )}
           </div>
@@ -292,22 +277,20 @@ export default function Navbar() {
           {/* Mobile menu trigger */}
           <div className="flex md:hidden items-center gap-2">
             {!isAuthenticated && (
-              <Button
-                to="/signup"
-                variant="primary"
-                size="sm"
-                className="text-xs px-2.5 py-1.5 sm:hidden"
+              <Link
+                to="/register"
+                className="text-xs px-3.5 py-1.5 rounded-full font-semibold bg-[#1E281F] text-white shadow-sm sm:hidden"
               >
-                Sign Up
-              </Button>
+                Get Started →
+              </Link>
             )}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="p-2 rounded-xl text-[#454743] hover:text-stone-900 hover:bg-stone-100 border border-stone-200 focus:outline-none"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -315,16 +298,16 @@ export default function Navbar() {
 
       {/* Mobile menu drop panel */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white/95 backdrop-blur-lg px-4 pt-3 pb-6 space-y-3 shadow-lg">
-          <div className="flex flex-col space-y-2 text-base font-medium text-slate-700">
+        <div className="md:hidden border-t border-stone-200 bg-[#FAF8F4]/98 backdrop-blur-xl px-4 pt-3 pb-6 space-y-3 shadow-xl">
+          <div className="flex flex-col space-y-2 text-sm font-medium text-[#454743]">
             {isAuthenticated ? (
               <>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between mb-2">
+                <div className="p-3 bg-white rounded-xl border border-stone-200 flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2 text-xs">
-                    <User className="w-4 h-4 text-slate-500" />
-                    <span className="font-bold text-slate-900">{user?.name}</span>
+                    <User className="w-4 h-4 text-stone-500" />
+                    <span className="font-bold text-[#1C1D1B]">{user?.name}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 uppercase">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase font-mono ${getRoleBadgeStyle(user?.role)}`}>
                     {user?.role}
                   </span>
                 </div>
@@ -334,23 +317,23 @@ export default function Navbar() {
                     <Link
                       to="/leader/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-purple-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/leader/projects/create"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-purple-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Create Project
                     </Link>
                     <Link
                       to="/projects"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-purple-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
-                      Projects
+                      Explore Projects
                     </Link>
                   </>
                 )}
@@ -360,42 +343,42 @@ export default function Navbar() {
                     <Link
                       to="/student/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/student/profile"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Profile
                     </Link>
                     <Link
                       to="/projects"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Explore Projects
                     </Link>
                     <Link
                       to="/student/projects"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       My Projects
                     </Link>
                     <Link
                       to="/student/invitations"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Invitations
                     </Link>
                     <Link
                       to="/student/tasks"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Tasks
                     </Link>
@@ -407,110 +390,75 @@ export default function Navbar() {
                     <Link
                       to="/faculty/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
                       Dashboard
                     </Link>
                     <Link
                       to="/projects"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                      className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                     >
-                      Projects
+                      Explore Directory
                     </Link>
                   </>
                 )}
 
-                <div className="pt-2">
-                  <Button
-                    variant="outline"
-                    size="md"
-                    icon={LogOut}
-                    iconPosition="left"
+                <div className="pt-2 border-t border-stone-200">
+                  <button
                     onClick={handleLogout}
-                    className="w-full justify-center text-rose-600 hover:bg-rose-50"
+                    className="w-full py-2.5 rounded-full font-semibold text-xs text-rose-600 hover:bg-rose-50 border border-rose-200 transition-colors"
                   >
                     Log Out
-                  </Button>
-                </div>
-              </>
-            ) : isLandingPage ? (
-              <>
-                <button
-                  onClick={() => scrollToSection('problem')}
-                  className="text-left px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
-                >
-                  Challenges
-                </button>
-                <button
-                  onClick={() => scrollToSection('features')}
-                  className="text-left px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
-                >
-                  Features
-                </button>
-                <button
-                  onClick={() => scrollToSection('how-it-works')}
-                  className="text-left px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
-                >
-                  How It Works
-                </button>
-                <button
-                  onClick={() => scrollToSection('roles')}
-                  className="text-left px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
-                >
-                  For Students & Faculty
-                </button>
-                <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
-                  <Button
-                    to="/login"
-                    variant="outline"
-                    size="md"
-                    className="w-full justify-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Log in
-                  </Button>
-                  <Button
-                    to="/signup"
-                    variant="primary"
-                    size="md"
-                    className="w-full justify-center"
-                    icon={Sparkles}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Get Started Free
-                  </Button>
+                  </button>
                 </div>
               </>
             ) : (
               <>
                 <Link
-                  to="/"
+                  to="/#features"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-md hover:bg-slate-100 hover:text-indigo-600 transition-colors"
+                  className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
                 >
-                  Home
+                  Features
                 </Link>
-                <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
-                  <Button
+                <Link
+                  to="/#how-it-works"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
+                >
+                  How It Works
+                </Link>
+                <Link
+                  to="/#roles"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
+                >
+                  Roles
+                </Link>
+                <Link
+                  to="/projects"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2 rounded-xl hover:bg-stone-100 hover:text-stone-900 transition-colors"
+                >
+                  Explore Projects
+                </Link>
+
+                <div className="pt-3 border-t border-stone-200 flex flex-col gap-2">
+                  <Link
                     to="/login"
-                    variant="outline"
-                    size="md"
-                    className="w-full justify-center"
                     onClick={() => setMobileMenuOpen(false)}
+                    className="w-full text-center py-2.5 rounded-full font-medium text-[#1C1D1B] bg-white border border-stone-200"
                   >
                     Log in
-                  </Button>
-                  <Button
-                    to="/signup"
-                    variant="primary"
-                    size="md"
-                    className="w-full justify-center"
-                    icon={Sparkles}
+                  </Link>
+                  <Link
+                    to="/register"
                     onClick={() => setMobileMenuOpen(false)}
+                    className="w-full text-center py-2.5 rounded-full font-semibold text-white bg-[#1E281F]"
                   >
                     Get Started Free
-                  </Button>
+                  </Link>
                 </div>
               </>
             )}
